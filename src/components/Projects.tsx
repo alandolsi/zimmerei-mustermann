@@ -53,13 +53,13 @@ export function Projects() {
   const [selectedProject, setSelectedProject] = useState<typeof projects[0] | null>(null)
 
   return (
-    <section id="projects" className="py-16 md:py-24 bg-background">
+    <section id="projects" className="py-16 md:py-24 bg-primary">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12 md:mb-16">
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-4">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-primary-foreground mb-4">
             Unsere Projekte
           </h2>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-lg text-primary-foreground/90 max-w-2xl mx-auto">
             Ein Einblick in unsere hochwertigen Arbeiten - Qualität, auf die man bauen kann
           </p>
         </div>

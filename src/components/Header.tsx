@@ -58,7 +58,7 @@ export function Header() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
           <div className="flex-shrink-0">
-            <h1 className="text-2xl font-bold text-primary">
+            <h1 className={`text-2xl font-bold transition-colors ${scrolled ? 'text-primary' : 'text-white'}`}>
               Karmann Zimmerei
             </h1>
           </div>
@@ -68,15 +68,15 @@ export function Header() {
               <button
                 key={item.name}
                 onClick={() => handleNavClick(item.href)}
-                className={`relative font-semibold text-sm tracking-wide transition-colors hover:text-primary ${
-                  activeSection === item.href.substring(1)
-                    ? 'text-primary'
-                    : 'text-foreground'
+                className={`relative font-semibold text-sm tracking-wide transition-colors ${
+                  scrolled 
+                    ? `hover:text-primary ${activeSection === item.href.substring(1) ? 'text-primary' : 'text-foreground'}`
+                    : `hover:text-white ${activeSection === item.href.substring(1) ? 'text-white' : 'text-white'}`
                 }`}
               >
                 {item.name}
                 {activeSection === item.href.substring(1) && (
-                  <span className="absolute -bottom-1 left-0 right-0 h-0.5 bg-primary" />
+                  <span className={`absolute -bottom-1 left-0 right-0 h-0.5 ${scrolled ? 'bg-primary' : 'bg-white'}`} />
                 )}
               </button>
             ))}
@@ -85,7 +85,7 @@ export function Header() {
           <div className="md:hidden">
             <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
               <SheetTrigger asChild>
-                <Button variant="ghost" size="icon">
+                <Button variant="ghost" size="icon" className={scrolled ? '' : 'text-white hover:text-white'}>
                   <List className="h-6 w-6" />
                 </Button>
               </SheetTrigger>
