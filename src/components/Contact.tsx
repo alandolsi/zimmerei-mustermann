@@ -74,68 +74,98 @@ export function Contact() {
   }
 
   return (
-    <section id="contact" className="py-16 md:py-24 bg-background">
+    <section id="contact" className="py-16 md:py-24 bg-muted/30">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12 md:mb-16">
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-4">
-            Kontakt
-          </h2>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Haben Sie Fragen oder möchten Sie ein Projekt besprechen? Wir freuen uns auf Ihre Nachricht!
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
-            className="space-y-6"
           >
-            <Card>
-              <CardContent className="p-6">
-                <div className="flex items-start space-x-4">
-                  <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
-                    <Phone className="w-6 h-6 text-primary" weight="duotone" />
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-4">
+              Kontaktieren Sie uns
+            </h2>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              Haben Sie Fragen oder möchten Sie ein Projekt besprechen? Wir freuen uns auf Ihre Nachricht!
+            </p>
+          </motion.div>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+            className="lg:col-span-2 space-y-6"
+          >
+            <div className="bg-gradient-to-br from-primary to-primary/80 rounded-xl p-8 text-primary-foreground shadow-lg">
+              <h3 className="text-2xl font-bold mb-2">Sprechen wir über Ihr Projekt</h3>
+              <p className="text-primary-foreground/90 mb-8">
+                Unser Team steht Ihnen für Beratung und individuelle Angebote zur Verfügung.
+              </p>
+              
+              <div className="space-y-6">
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 rounded-lg bg-primary-foreground/20 backdrop-blur-sm flex items-center justify-center flex-shrink-0">
+                    <Phone className="w-6 h-6 text-primary-foreground" weight="bold" />
                   </div>
                   <div>
-                    <h3 className="font-semibold mb-1">Telefon</h3>
-                    <p className="text-muted-foreground">+49 89 123 456 78</p>
-                    <p className="text-sm text-muted-foreground mt-1">Mo-Fr: 7:00 - 18:00 Uhr</p>
+                    <h4 className="font-semibold text-lg mb-1">Telefon</h4>
+                    <a href="tel:+4989123456789" className="text-primary-foreground/90 hover:text-primary-foreground transition-colors">
+                      +49 89 123 456 78
+                    </a>
+                    <p className="text-sm text-primary-foreground/70 mt-1">Mo-Fr: 7:00 - 18:00 Uhr</p>
                   </div>
                 </div>
-              </CardContent>
-            </Card>
 
-            <Card>
-              <CardContent className="p-6">
-                <div className="flex items-start space-x-4">
-                  <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
-                    <Envelope className="w-6 h-6 text-primary" weight="duotone" />
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 rounded-lg bg-primary-foreground/20 backdrop-blur-sm flex items-center justify-center flex-shrink-0">
+                    <Envelope className="w-6 h-6 text-primary-foreground" weight="bold" />
                   </div>
                   <div>
-                    <h3 className="font-semibold mb-1">E-Mail</h3>
-                    <p className="text-muted-foreground break-all">info@karmann-zimmerei.de</p>
-                    <p className="text-sm text-muted-foreground mt-1">Wir antworten innerhalb 24h</p>
+                    <h4 className="font-semibold text-lg mb-1">E-Mail</h4>
+                    <a href="mailto:info@karmann-zimmerei.de" className="text-primary-foreground/90 hover:text-primary-foreground transition-colors break-all">
+                      info@karmann-zimmerei.de
+                    </a>
+                    <p className="text-sm text-primary-foreground/70 mt-1">Antwort innerhalb von 24 Stunden</p>
                   </div>
                 </div>
-              </CardContent>
-            </Card>
 
-            <Card>
-              <CardContent className="p-6">
-                <div className="flex items-start space-x-4">
-                  <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
-                    <MapPin className="w-6 h-6 text-primary" weight="duotone" />
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 rounded-lg bg-primary-foreground/20 backdrop-blur-sm flex items-center justify-center flex-shrink-0">
+                    <MapPin className="w-6 h-6 text-primary-foreground" weight="bold" />
                   </div>
                   <div>
-                    <h3 className="font-semibold mb-1">Adresse</h3>
-                    <p className="text-muted-foreground">
+                    <h4 className="font-semibold text-lg mb-1">Adresse</h4>
+                    <address className="text-primary-foreground/90 not-italic">
                       Musterstraße 123
                       <br />
                       80331 München
-                    </p>
+                      <br />
+                      Deutschland
+                    </address>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <Card className="border-2">
+              <CardContent className="p-6">
+                <h4 className="font-semibold text-lg mb-3">Öffnungszeiten</h4>
+                <div className="space-y-2 text-sm">
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">Montag - Freitag:</span>
+                    <span className="font-medium">7:00 - 18:00 Uhr</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">Samstag:</span>
+                    <span className="font-medium">Nach Vereinbarung</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">Sonntag:</span>
+                    <span className="font-medium">Geschlossen</span>
                   </div>
                 </div>
               </CardContent>
@@ -147,17 +177,20 @@ export function Contact() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.2 }}
-            className="lg:col-span-2"
+            className="lg:col-span-3"
           >
-            <Card>
-              <CardHeader>
-                <CardTitle>Anfrage senden</CardTitle>
+            <Card className="shadow-lg border-2">
+              <CardHeader className="pb-4">
+                <CardTitle className="text-2xl">Anfrage senden</CardTitle>
+                <p className="text-sm text-muted-foreground mt-2">
+                  Füllen Sie das Formular aus und wir melden uns schnellstmöglich bei Ihnen.
+                </p>
               </CardHeader>
-              <CardContent>
-                <form onSubmit={handleSubmit} className="space-y-6">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <CardContent className="pt-2">
+                <form onSubmit={handleSubmit} className="space-y-5">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                     <div className="space-y-2">
-                      <Label htmlFor="name">
+                      <Label htmlFor="name" className="text-sm font-medium">
                         Name <span className="text-destructive">*</span>
                       </Label>
                       <Input
@@ -166,10 +199,11 @@ export function Contact() {
                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                         placeholder="Max Mustermann"
                         required
+                        className="h-11"
                       />
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="email">
+                      <Label htmlFor="email" className="text-sm font-medium">
                         E-Mail <span className="text-destructive">*</span>
                       </Label>
                       <Input
@@ -179,38 +213,48 @@ export function Contact() {
                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                         placeholder="max@beispiel.de"
                         required
+                        className="h-11"
                       />
                     </div>
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="phone">Telefon</Label>
+                    <Label htmlFor="phone" className="text-sm font-medium">
+                      Telefon
+                    </Label>
                     <Input
                       id="phone"
                       type="tel"
                       value={formData.phone}
                       onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                       placeholder="+49 89 123 456 78"
+                      className="h-11"
                     />
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="message">
+                    <Label htmlFor="message" className="text-sm font-medium">
                       Nachricht <span className="text-destructive">*</span>
                     </Label>
                     <Textarea
                       id="message"
                       value={formData.message}
                       onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                      placeholder="Beschreiben Sie Ihr Projekt..."
-                      rows={6}
+                      placeholder="Beschreiben Sie Ihr Projekt oder Ihre Anfrage..."
+                      rows={7}
                       required
+                      className="resize-none"
                     />
                   </div>
 
-                  <Button type="submit" size="lg" className="w-full sm:w-auto">
-                    Nachricht senden
-                  </Button>
+                  <div className="flex items-start gap-3 pt-2">
+                    <Button type="submit" size="lg" className="px-8">
+                      Nachricht senden
+                    </Button>
+                    <p className="text-xs text-muted-foreground pt-3 leading-relaxed">
+                      Mit dem Absenden stimmen Sie der Verarbeitung Ihrer Daten zu.
+                    </p>
+                  </div>
                 </form>
               </CardContent>
             </Card>
