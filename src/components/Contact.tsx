@@ -92,15 +92,15 @@ export function Contact() {
           </motion.div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 lg:items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.1 }}
-            className="lg:col-span-2 grid grid-cols-1 lg:grid-rows-2 gap-6"
+            className="lg:col-span-2 flex flex-col gap-6"
           >
-            <div className="bg-gradient-to-br from-primary to-primary/80 rounded-xl p-8 text-primary-foreground shadow-lg">
+            <div className="bg-gradient-to-br from-primary to-primary/80 rounded-xl p-8 text-primary-foreground shadow-lg flex-1 flex flex-col">
               <h3 className="text-2xl font-bold mb-2">Sprechen wir über Ihr Projekt</h3>
               <p className="text-primary-foreground/90 mb-8">
                 Unser Team steht Ihnen für Beratung und individuelle Angebote zur Verfügung.
@@ -177,9 +177,9 @@ export function Contact() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.2 }}
-            className="lg:col-span-3 flex"
+            className="lg:col-span-3"
           >
-            <Card className="shadow-lg border-2 flex-1 flex flex-col">
+            <Card className="shadow-lg border-2 h-full flex flex-col">
               <CardHeader className="pb-4">
                 <CardTitle className="text-2xl">Anfrage senden</CardTitle>
                 <p className="text-sm text-muted-foreground mt-2">
