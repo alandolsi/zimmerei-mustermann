@@ -2,7 +2,7 @@
 @import "tw-animate-css";
 
 :root {
-  --background: oklch(0.98 0.01 80);
+  --background: oklch(87.1% 0.15 154.449);
   --foreground: oklch(0.30 0.01 60);
   
   --card: oklch(1 0 0);
@@ -11,16 +11,16 @@
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.30 0.01 60);
   
-  --primary: oklch(0.45 0.12 25);
+  --primary: oklch(62.7% 0.194 149.214);
   --primary-foreground: oklch(1 0 0);
   
-  --secondary: oklch(0.92 0.02 80);
+  --secondary: oklch(79.2% 0.209 151.711);
   --secondary-foreground: oklch(0.30 0.01 60);
   
   --muted: oklch(0.95 0.01 80);
   --muted-foreground: oklch(0.55 0.01 60);
   
-  --accent: oklch(0.45 0.12 25);
+  --accent: oklch(72.3% 0.219 149.579);
   --accent-foreground: oklch(1 0 0);
   
   --destructive: oklch(0.577 0.245 27.325);
