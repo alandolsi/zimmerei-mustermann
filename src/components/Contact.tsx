@@ -151,22 +151,25 @@ export function Contact() {
               </div>
             </div>
 
-            <Card className="border-2">
+            <Card className="border-2 bg-gradient-to-br from-accent/10 to-accent/5">
               <CardContent className="p-6">
-                <h4 className="font-semibold text-lg mb-3">Öffnungszeiten</h4>
-                <div className="space-y-2 text-sm">
-                  <div className="flex justify-between">
-                    <span className="text-muted-foreground">Montag - Freitag:</span>
-                    <span className="font-medium">7:00 - 18:00 Uhr</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-muted-foreground">Samstag:</span>
-                    <span className="font-medium">Nach Vereinbarung</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-muted-foreground">Sonntag:</span>
-                    <span className="font-medium">Geschlossen</span>
-                  </div>
+                <h4 className="font-semibold text-lg mb-3 flex items-center gap-2">
+                  <Phone className="w-5 h-5 text-accent" weight="bold" />
+                  Notfall-Hotline
+                </h4>
+                <p className="text-sm text-muted-foreground mb-3">
+                  Bei dringenden Reparaturen und Notfällen erreichen Sie uns rund um die Uhr:
+                </p>
+                <div className="space-y-2">
+                  <a 
+                    href="tel:+491234567890" 
+                    className="block text-2xl font-bold text-accent hover:text-accent/80 transition-colors"
+                  >
+                    +49 123 456 7890
+                  </a>
+                  <p className="text-xs text-muted-foreground">
+                    24/7 Verfügbar für Notfälle
+                  </p>
                 </div>
               </CardContent>
             </Card>

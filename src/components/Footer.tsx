@@ -40,21 +40,25 @@ export function Footer({ onNavigateToImpressum, onNavigateToDatenschutz, onNavig
           </div>
 
           <div>
-            <h3 className="text-xl font-bold mb-4">Öffnungszeiten</h3>
-            <div className="space-y-2 text-primary-foreground/90">
-              <div className="flex justify-between">
-                <span>Montag - Freitag:</span>
-                <span>7:00 - 18:00</span>
-              </div>
-              <div className="flex justify-between">
-                <span>Samstag:</span>
-                <span>Nach Vereinbarung</span>
-              </div>
-              <div className="flex justify-between">
-                <span>Sonntag:</span>
-                <span>Geschlossen</span>
-              </div>
-            </div>
+            <h3 className="text-xl font-bold mb-4">Leistungen</h3>
+            <ul className="space-y-2 text-primary-foreground/90">
+              <li className="flex items-start">
+                <span className="mr-2">•</span>
+                <span>Dachstühle & Holzkonstruktionen</span>
+              </li>
+              <li className="flex items-start">
+                <span className="mr-2">•</span>
+                <span>Altbausanierung & Modernisierung</span>
+              </li>
+              <li className="flex items-start">
+                <span className="mr-2">•</span>
+                <span>Carports & Pergolen</span>
+              </li>
+              <li className="flex items-start">
+                <span className="mr-2">•</span>
+                <span>Holzrahmenbau & Aufstockungen</span>
+              </li>
+            </ul>
           </div>
         </div>
 
