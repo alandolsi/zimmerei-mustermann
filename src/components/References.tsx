@@ -111,7 +111,7 @@ export function References() {
     : projects.filter(project => project.category === selectedCategory)
 
   return (
-    <section id="references" className="py-16 md:py-24 bg-background">
+    <section id="references" className="py-16 md:py-24 bg-muted/30">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
           <motion.div
@@ -165,22 +165,22 @@ export function References() {
                 transition={{ duration: 0.4, delay: index * 0.05 }}
               >
                 <Card
-                  className="group cursor-pointer overflow-hidden hover:shadow-xl transition-all duration-300"
+                  className="group cursor-pointer overflow-hidden hover:shadow-xl transition-all duration-300 h-full flex flex-col"
                   onClick={() => setSelectedProject(project)}
                 >
                   <div className="relative aspect-[4/3] overflow-hidden">
                     <img
                       src={project.image}
                       alt={project.title}
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                      className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                    <Badge className="absolute top-4 right-4 bg-primary text-primary-foreground hover:bg-primary/90 backdrop-blur-sm">
+                    <Badge className="absolute top-4 right-4 backdrop-blur-sm">
                       {project.category}
                     </Badge>
                   </div>
-                  <div className="p-5">
-                    <h3 className="font-semibold text-lg mb-2 group-hover:text-primary transition-colors">
+                  <div className="p-5 flex-1 flex flex-col">
+                    <h3 className="font-semibold text-lg mb-2 transition-colors">
                       {project.title}
                     </h3>
                     <p className="text-sm text-muted-foreground line-clamp-2">
@@ -216,7 +216,7 @@ export function References() {
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
                   <h3 className="text-2xl font-bold">{selectedProject.title}</h3>
-                  <Badge className="bg-primary text-primary-foreground hover:bg-primary/90">{selectedProject.category}</Badge>
+                  <Badge>{selectedProject.category}</Badge>
                 </div>
                 <p className="text-muted-foreground leading-relaxed">
                   {selectedProject.description}
