@@ -146,9 +146,9 @@ function App() {
       <Header />
       <main>
         <Hero />
-        <Services />
-        <Projects />
         <About />
+        <Projects />
+        <Services />
         <References />
         <Contact />
       </main>
