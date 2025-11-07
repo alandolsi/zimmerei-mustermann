@@ -1,35 +1,32 @@
 import { useState, useEffect } from 'react'
 import { Button } from '@/components/ui/button'
-import { Button } from '@/components/ui/button'
+import { ArrowUp } from '@phosphor-icons/react'
 
-    const toggleVisibility = ()
+export function ScrollToTop() {
   const [isVisible, setIsVisible] = useState(false)
 
   useEffect(() => {
     const toggleVisibility = () => {
       if (window.scrollY > 300) {
-    }
+        setIsVisible(true)
       } else {
         setIsVisible(false)
       }
+    }
+
+    window.addEventListener('scroll', toggleVisibility)
+    return () => window.removeEventListener('scroll', toggleVisibility)
+  }, [])
+
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    })
   }
 
-      {isVisible && (
-
-          size="ic
-        >
-     
-    </>
-
-
-
-
-
-
-  }
-
-
-
+  return (
+    <>
       {isVisible && (
         <Button
           onClick={scrollToTop}
