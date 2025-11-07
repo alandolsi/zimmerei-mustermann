@@ -113,8 +113,8 @@ export function Contact() {
                   </div>
                   <div>
                     <h4 className="font-semibold text-lg mb-1">Telefon</h4>
-                    <a href="tel:+4989123456789" className="text-primary-foreground/90 hover:text-primary-foreground transition-colors">
-                      +49 89 123 456 78
+                    <a href="tel:+491234567890" className="text-primary-foreground/90 hover:text-primary-foreground transition-colors">
+                      +49 123 456 7890
                     </a>
                     <p className="text-sm text-primary-foreground/70 mt-1">Mo-Fr: 7:00 - 18:00 Uhr</p>
                   </div>
@@ -126,8 +126,8 @@ export function Contact() {
                   </div>
                   <div>
                     <h4 className="font-semibold text-lg mb-1">E-Mail</h4>
-                    <a href="mailto:info@karmann-zimmerei.de" className="text-primary-foreground/90 hover:text-primary-foreground transition-colors break-all">
-                      info@karmann-zimmerei.de
+                    <a href="mailto:info@beispiel-zimmerei.de" className="text-primary-foreground/90 hover:text-primary-foreground transition-colors break-all">
+                      info@beispiel-zimmerei.de
                     </a>
                     <p className="text-sm text-primary-foreground/70 mt-1">Antwort innerhalb von 24 Stunden</p>
                   </div>
@@ -140,9 +140,9 @@ export function Contact() {
                   <div>
                     <h4 className="font-semibold text-lg mb-1">Adresse</h4>
                     <address className="text-primary-foreground/90 not-italic">
-                      Musterstraße 123
+                      Beispielstraße 123
                       <br />
-                      80331 München
+                      12345 Musterstadt
                       <br />
                       Deutschland
                     </address>

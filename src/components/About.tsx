@@ -42,8 +42,8 @@ export function About() {
             </h2>
             <div className="space-y-4 text-lg text-foreground/80 leading-relaxed">
               <p>
-                Die <strong>Karmann Zimmerei</strong> ist Ihr kompetenter Partner für alle 
-                Zimmererarbeiten in der Region München. Als traditionsreicher Meisterbetrieb 
+                Unsere <strong>Zimmerei</strong> ist Ihr kompetenter Partner für alle 
+                Zimmererarbeiten. Als traditionsreicher Meisterbetrieb 
                 verbinden wir handwerkliches Können mit modernster Technik.
               </p>
               <p>

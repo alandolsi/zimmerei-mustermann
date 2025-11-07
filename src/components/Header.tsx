@@ -59,7 +59,7 @@ export function Header() {
         <div className="flex justify-between items-center h-20">
           <div className="flex-shrink-0">
             <h1 className={`text-2xl font-bold transition-colors ${scrolled ? 'text-primary' : 'text-white'}`}>
-              Karmann Zimmerei
+              Zimmerei Mustermann
             </h1>
           </div>
 
