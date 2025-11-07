@@ -55,7 +55,7 @@ const projects: Project[] = [
     id: 6,
     title: 'Gartenhaus Holzbau',
     category: 'Holzbau',
-    image: 'https://images.unsplash.com/photo-1600607687644-c7171b42498b?w=800&h=600&fit=crop',
+    image: 'https://images.unsplash.com/photo-1600607687644-c7171b42498f?w=800&h=600&fit=crop',
     description: 'Maßgefertigtes Gartenhaus in nachhaltiger Holzbauweise',
   },
   {
@@ -141,7 +141,7 @@ export function References() {
               key={category}
               variant={selectedCategory === category ? 'secondary' : 'outline'}
               onClick={() => setSelectedCategory(category)}
-              className={selectedCategory === category ? 'px-6' : 'px-6 bg-primary-foreground/10 text-primary-foreground border-primary-foreground/30 hover:bg-primary-foreground/20 hover:text-primary-foreground'}
+              className={selectedCategory === category ? 'px-6 bg-primary-foreground text-primary hover:bg-primary-foreground/90' : 'px-6 bg-primary-foreground/10 text-primary-foreground border-primary-foreground/30 hover:bg-primary-foreground/20 hover:text-primary-foreground'}
             >
               {category}
             </Button>
