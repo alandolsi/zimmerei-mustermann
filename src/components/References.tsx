@@ -1,100 +1,99 @@
 import { useState } from 'react'
+import { useKV } from '@github/spark/hooks'
 import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Dialog, DialogContent } from '@/components/ui/dialog'
 import { motion, AnimatePresence } from 'framer-motion'
 
-interface Project {
-  id: number
+interface Reference {
+  id: string
   title: string
   category: string
   image: string
   description: string
 }
 
-const categories = ['Alle', 'Dachstuhl', 'Carport', 'Terrasse', 'Holzbau', 'Fassade']
-
-const projects: Project[] = [
+const defaultReferences: Reference[] = [
   {
-    id: 1,
+    id: '1',
     title: 'Moderner Dachstuhl Einfamilienhaus',
     category: 'Dachstuhl',
     image: 'https://images.unsplash.com/photo-1632778149955-e80f8ceca2e8?w=800&h=600&fit=crop',
     description: 'Kompletter Dachstuhl für ein modernes Einfamilienhaus mit Satteldach',
   },
   {
-    id: 2,
+    id: '2',
     title: 'Carport mit Holzkonstruktion',
     category: 'Carport',
     image: 'https://images.unsplash.com/photo-1588880331179-bc9b93a8cb5e?w=800&h=600&fit=crop',
     description: 'Maßgefertigter Carport aus massivem Holz für zwei Fahrzeuge',
   },
   {
-    id: 3,
+    id: '3',
     title: 'Terrassenüberdachung',
     category: 'Terrasse',
     image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&h=600&fit=crop',
     description: 'Elegante Terrassenüberdachung mit Holz-Glas-Konstruktion',
   },
   {
-    id: 4,
+    id: '4',
     title: 'Holzfassade Mehrfamilienhaus',
     category: 'Fassade',
     image: 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=800&h=600&fit=crop',
     description: 'Moderne Holzfassade mit nachhaltiger Lärchenverkleidung',
   },
   {
-    id: 5,
+    id: '5',
     title: 'Dachsanierung Altbau',
     category: 'Dachstuhl',
     image: 'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=800&h=600&fit=crop',
     description: 'Sanierung und Verstärkung eines historischen Dachstuhls',
   },
   {
-    id: 6,
+    id: '6',
     title: 'Gartenhaus Holzbau',
     category: 'Holzbau',
     image: 'https://images.unsplash.com/photo-1600607687644-c7171b42498f?w=800&h=600&fit=crop',
     description: 'Maßgefertigtes Gartenhaus in nachhaltiger Holzbauweise',
   },
   {
-    id: 7,
+    id: '7',
     title: 'Walmdach Neubau',
     category: 'Dachstuhl',
     image: 'https://images.unsplash.com/photo-1600566752355-35792bedcfea?w=800&h=600&fit=crop',
     description: 'Walmdachkonstruktion für Neubau-Einfamilienhaus',
   },
   {
-    id: 8,
+    id: '8',
     title: 'Holzterrasse mit Pergola',
     category: 'Terrasse',
     image: 'https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?w=800&h=600&fit=crop',
     description: 'Großzügige Holzterrasse mit integrierter Pergola',
   },
   {
-    id: 9,
+    id: '9',
     title: 'Doppelcarport Premium',
     category: 'Carport',
     image: 'https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?w=800&h=600&fit=crop',
     description: 'Premium Doppelcarport mit Abstellraum und Satteldach',
   },
   {
-    id: 10,
+    id: '10',
     title: 'Holzanbau Wohnhaus',
     category: 'Holzbau',
     image: 'https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?w=800&h=600&fit=crop',
     description: 'Moderner Holzanbau mit großflächiger Verglasung',
   },
   {
-    id: 11,
+    id: '11',
     title: 'Fassadensanierung Holz',
     category: 'Fassade',
     image: 'https://images.unsplash.com/photo-1600585152915-d208bec867a1?w=800&h=600&fit=crop',
     description: 'Komplettsanierung mit moderner Holzfassade',
   },
   {
-    id: 12,
+    id: '12',
     title: 'Pergola Garten',
     category: 'Terrasse',
     image: 'https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=800&h=600&fit=crop',
@@ -103,12 +102,16 @@ const projects: Project[] = [
 ]
 
 export function References() {
+  const [references] = useKV<Reference[]>('references-list', defaultReferences)
   const [selectedCategory, setSelectedCategory] = useState('Alle')
-  const [selectedProject, setSelectedProject] = useState<Project | null>(null)
+  const [selectedProject, setSelectedProject] = useState<Reference | null>(null)
+
+  const displayReferences = references || defaultReferences
+  const allCategories = ['Alle', ...new Set(displayReferences.map(ref => ref.category))]
 
   const filteredProjects = selectedCategory === 'Alle'
-    ? projects
-    : projects.filter(project => project.category === selectedCategory)
+    ? displayReferences
+    : displayReferences.filter(project => project.category === selectedCategory)
 
   return (
     <section id="references" className="py-16 md:py-24 bg-primary">
@@ -136,7 +139,7 @@ export function References() {
           transition={{ duration: 0.5, delay: 0.1 }}
           className="flex flex-wrap justify-center gap-3 mb-12"
         >
-          {categories.map((category) => (
+          {allCategories.map((category) => (
             <Button
               key={category}
               variant={selectedCategory === category ? 'secondary' : 'outline'}

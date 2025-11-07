@@ -1,14 +1,16 @@
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Wrench, Envelope, ArrowLeft } from '@phosphor-icons/react'
+import { Wrench, Envelope, ArrowLeft, FolderOpen, Images } from '@phosphor-icons/react'
 
 interface AdminDashboardProps {
   onBack: () => void
   onNavigateToServices: () => void
   onNavigateToContacts: () => void
+  onNavigateToProjects: () => void
+  onNavigateToReferences: () => void
 }
 
-export function AdminDashboard({ onBack, onNavigateToServices, onNavigateToContacts }: AdminDashboardProps) {
+export function AdminDashboard({ onBack, onNavigateToServices, onNavigateToContacts, onNavigateToProjects, onNavigateToReferences }: AdminDashboardProps) {
   return (
     <div className="min-h-screen bg-background">
       <div className="bg-primary text-primary-foreground py-6 px-4 shadow-md">
@@ -39,6 +41,40 @@ export function AdminDashboard({ onBack, onNavigateToServices, onNavigateToConta
             <CardContent>
               <Button className="w-full">
                 Zur Leistungsverwaltung
+              </Button>
+            </CardContent>
+          </Card>
+
+          <Card className="hover:shadow-lg transition-shadow cursor-pointer" onClick={onNavigateToProjects}>
+            <CardHeader>
+              <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
+                <FolderOpen className="w-6 h-6 text-primary" weight="duotone" />
+              </div>
+              <CardTitle className="text-2xl">Projekte verwalten</CardTitle>
+              <CardDescription className="text-base">
+                Fügen Sie neue Projekte hinzu, bearbeiten oder entfernen Sie bestehende Projekte
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Button className="w-full">
+                Zur Projektverwaltung
+              </Button>
+            </CardContent>
+          </Card>
+
+          <Card className="hover:shadow-lg transition-shadow cursor-pointer" onClick={onNavigateToReferences}>
+            <CardHeader>
+              <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
+                <Images className="w-6 h-6 text-primary" weight="duotone" />
+              </div>
+              <CardTitle className="text-2xl">Referenzen verwalten</CardTitle>
+              <CardDescription className="text-base">
+                Fügen Sie neue Referenzen hinzu, bearbeiten oder entfernen Sie bestehende Referenzen
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Button className="w-full">
+                Zur Referenzverwaltung
               </Button>
             </CardContent>
           </Card>

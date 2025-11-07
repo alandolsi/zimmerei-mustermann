@@ -1,47 +1,56 @@
 import { useState } from 'react'
+import { useKV } from '@github/spark/hooks'
 import { Card, CardContent } from '@/components/ui/card'
 import { Dialog, DialogContent } from '@/components/ui/dialog'
 import { Badge } from '@/components/ui/badge'
 import { motion } from 'framer-motion'
 
-const projects = [
+interface Project {
+  id: string
+  title: string
+  category: string
+  image: string
+  description: string
+}
+
+const defaultProjects: Project[] = [
   {
-    id: 1,
+    id: '1',
     title: 'Einfamilienhaus Neubau',
     category: 'Dachstuhl',
     image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=800',
     description: 'Moderner Dachstuhl mit Gaube für ein Einfamilienhaus in München',
   },
   {
-    id: 2,
+    id: '2',
     title: 'Carport Holzkonstruktion',
     category: 'Holzbau',
     image: 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?q=80&w=800',
     description: 'Freistehender Carport in hochwertiger Holzbauweise',
   },
   {
-    id: 3,
+    id: '3',
     title: 'Dachsanierung Altbau',
     category: 'Sanierung',
     image: 'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?q=80&w=800',
     description: 'Komplette Dachsanierung eines denkmalgeschützten Gebäudes',
   },
   {
-    id: 4,
+    id: '4',
     title: 'Holzterrassenüberdachung',
     category: 'Anbauten',
     image: 'https://images.unsplash.com/photo-1600607687644-c7171b42498f?q=80&w=800',
     description: 'Elegante Terrassenüberdachung mit integrierter Beleuchtung',
   },
   {
-    id: 5,
+    id: '5',
     title: 'Gewerbebau Holzkonstruktion',
     category: 'Holzbau',
     image: 'https://images.unsplash.com/photo-1600573472591-ee6b68d14c68?q=80&w=800',
     description: 'Große Holzkonstruktion für einen Gewerbebetrieb',
   },
   {
-    id: 6,
+    id: '6',
     title: 'Wintergarten Anbau',
     category: 'Anbauten',
     image: 'https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?q=80&w=800',
@@ -50,7 +59,10 @@ const projects = [
 ]
 
 export function Projects() {
-  const [selectedProject, setSelectedProject] = useState<typeof projects[0] | null>(null)
+  const [projects] = useKV<Project[]>('projects-list', defaultProjects)
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null)
+
+  const displayProjects = projects || defaultProjects
 
   return (
     <section id="projects" className="py-16 md:py-24 bg-primary">
@@ -65,7 +77,7 @@ export function Projects() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-          {projects.map((project, index) => (
+          {displayProjects.map((project, index) => (
             <motion.div
               key={project.id}
               initial={{ opacity: 0, scale: 0.9 }}
