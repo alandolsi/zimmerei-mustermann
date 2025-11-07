@@ -1,6 +1,6 @@
 # Planning Guide
 
-A professional website for a German timber construction and carpentry company showcasing their craftsmanship, services, and portfolio.
+A professional website for Mustermann Zimmerei, a German timber construction and carpentry company showcasing their craftsmanship, services, and portfolio.
 
 **Experience Qualities**: 
 1. **Craftsmanship** - The design should communicate precision, quality, and traditional woodworking expertise through careful attention to detail
