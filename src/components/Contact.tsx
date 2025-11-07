@@ -1,5 +1,4 @@
-import { useState } from 'react'
-import { useKV } from '@github/spark/hooks'
+import { useState, useEffect } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
@@ -19,7 +18,21 @@ interface ContactSubmission {
 }
 
 export function Contact() {
-  const [submissions, setSubmissions] = useKV<ContactSubmission[]>('contact-submissions', [])
+  const [submissions, setSubmissions] = useState<ContactSubmission[]>([])
+  
+  useEffect(() => {
+    const loadSubmissions = async () => {
+      try {
+        const stored = await window.spark.kv.get<ContactSubmission[]>('contact-submissions')
+        if (stored) {
+          setSubmissions(stored)
+        }
+      } catch (error) {
+        console.error('Failed to load submissions:', error)
+      }
+    }
+    loadSubmissions()
+  }, [])
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -27,7 +40,7 @@ export function Contact() {
     message: '',
   })
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
     if (!formData.name || !formData.email || !formData.message) {
@@ -41,9 +54,16 @@ export function Contact() {
       timestamp: Date.now(),
     }
 
-    setSubmissions((current) => [...(current || []), submission])
-
-    toast.success('Vielen Dank! Wir melden uns bald bei Ihnen.')
+    const updatedSubmissions = [...submissions, submission]
+    setSubmissions(updatedSubmissions)
+    
+    try {
+      await window.spark.kv.set('contact-submissions', updatedSubmissions)
+      toast.success('Vielen Dank! Wir melden uns bald bei Ihnen.')
+    } catch (error) {
+      console.error('Failed to save submission:', error)
+      toast.error('Es gab einen Fehler beim Speichern')
+    }
 
     setFormData({
       name: '',
