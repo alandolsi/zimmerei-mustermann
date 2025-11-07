@@ -13,11 +13,18 @@ A professional website for Mustermann Zimmerei, a German timber construction and
 ## Essential Features
 
 **Navigation System**
-- Functionality: Multi-page navigation with smooth scrolling and section anchoring
-- Purpose: Allow users to easily browse different sections (Home, Services, Projects, About, Contact)
-- Trigger: User clicks navigation links in header
-- Progression: User clicks link → smooth scroll to section or page → highlight active section in nav
-- Success criteria: Navigation is sticky, responsive, and clearly indicates current location
+- Functionality: Multi-page navigation with smooth scrolling and section anchoring, plus legal pages (Impressum, Datenschutz, AGB)
+- Purpose: Allow users to easily browse different sections (Home, Services, Projects, About, Contact) and access legal information
+- Trigger: User clicks navigation links in header or footer
+- Progression: User clicks link → smooth scroll to section or page → highlight active section in nav → can navigate back to home
+- Success criteria: Navigation is sticky, responsive, and clearly indicates current location; legal pages are accessible from footer
+
+**Legal Pages**
+- Functionality: Display Impressum (imprint), Datenschutz (privacy policy), and AGB (terms and conditions)
+- Purpose: Provide legally required information and terms for German business compliance
+- Trigger: User clicks footer links for Impressum, Datenschutz, or AGB
+- Progression: User clicks footer link → navigates to legal page → reads content → clicks back button → returns to home
+- Success criteria: All legal information is clearly formatted, easily readable, and accessible from any page
 
 **Services Display**
 - Functionality: Showcase different carpentry services (Dachstuhl, Holzbau, Sanierung, etc.)

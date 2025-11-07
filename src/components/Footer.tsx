@@ -1,7 +1,13 @@
 import { Separator } from '@/components/ui/separator'
 import { Phone, Envelope, MapPin } from '@phosphor-icons/react'
 
-export function Footer() {
+interface FooterProps {
+  onNavigateToImpressum: () => void
+  onNavigateToDatenschutz: () => void
+  onNavigateToAGB: () => void
+}
+
+export function Footer({ onNavigateToImpressum, onNavigateToDatenschutz, onNavigateToAGB }: FooterProps) {
   return (
     <footer className="bg-primary text-primary-foreground">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -58,13 +64,22 @@ export function Footer() {
             © {new Date().getFullYear()} Zimmerei Mustermann. Alle Rechte vorbehalten.
           </p>
           <div className="flex space-x-6 text-sm">
-            <button className="text-primary-foreground/80 hover:text-primary-foreground transition-colors">
+            <button 
+              onClick={onNavigateToImpressum}
+              className="text-primary-foreground/80 hover:text-primary-foreground transition-colors"
+            >
               Impressum
             </button>
-            <button className="text-primary-foreground/80 hover:text-primary-foreground transition-colors">
+            <button 
+              onClick={onNavigateToDatenschutz}
+              className="text-primary-foreground/80 hover:text-primary-foreground transition-colors"
+            >
               Datenschutz
             </button>
-            <button className="text-primary-foreground/80 hover:text-primary-foreground transition-colors">
+            <button 
+              onClick={onNavigateToAGB}
+              className="text-primary-foreground/80 hover:text-primary-foreground transition-colors"
+            >
               AGB
             </button>
           </div>
