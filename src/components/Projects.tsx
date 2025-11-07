@@ -74,7 +74,7 @@ export function Projects() {
               transition={{ duration: 0.5, delay: index * 0.1 }}
             >
               <Card 
-                className="overflow-hidden cursor-pointer group h-full p-0"
+                className="overflow-hidden cursor-pointer group h-full p-0 bg-card"
                 onClick={() => setSelectedProject(project)}
               >
                 <div className="relative h-64 overflow-hidden">
@@ -87,9 +87,9 @@ export function Projects() {
                 </div>
                 <CardContent className="p-6">
                   <div className="mb-2">
-                    <Badge variant="secondary">{project.category}</Badge>
+                    <Badge className="bg-primary text-primary-foreground hover:bg-primary/90">{project.category}</Badge>
                   </div>
-                  <h3 className="text-xl font-semibold mb-2">{project.title}</h3>
+                  <h3 className="text-xl font-semibold mb-2 text-card-foreground">{project.title}</h3>
                   <p className="text-muted-foreground text-sm">{project.description}</p>
                 </CardContent>
               </Card>
@@ -108,7 +108,7 @@ export function Projects() {
                 className="w-full h-96 object-cover rounded-lg"
               />
               <div>
-                <Badge variant="secondary" className="mb-2">
+                <Badge className="bg-primary text-primary-foreground hover:bg-primary/90 mb-2">
                   {selectedProject.category}
                 </Badge>
                 <h3 className="text-2xl font-bold mb-2">{selectedProject.title}</h3>

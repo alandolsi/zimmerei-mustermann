@@ -175,7 +175,7 @@ export function References() {
                       className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                    <Badge className="absolute top-4 right-4 bg-primary/90 backdrop-blur-sm">
+                    <Badge className="absolute top-4 right-4 bg-primary text-primary-foreground hover:bg-primary/90 backdrop-blur-sm">
                       {project.category}
                     </Badge>
                   </div>
@@ -216,7 +216,7 @@ export function References() {
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
                   <h3 className="text-2xl font-bold">{selectedProject.title}</h3>
-                  <Badge variant="secondary">{selectedProject.category}</Badge>
+                  <Badge className="bg-primary text-primary-foreground hover:bg-primary/90">{selectedProject.category}</Badge>
                 </div>
                 <p className="text-muted-foreground leading-relaxed">
                   {selectedProject.description}
