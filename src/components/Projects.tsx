@@ -99,7 +99,7 @@ export function Projects() {
       </div>
 
       <Dialog open={!!selectedProject} onOpenChange={() => setSelectedProject(null)}>
-        <DialogContent className="max-w-3xl">
+        <DialogContent className="max-w-3xl bg-card">
           {selectedProject && (
             <div className="space-y-4">
               <img

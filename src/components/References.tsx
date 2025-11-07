@@ -76,7 +76,7 @@ const projects: Project[] = [
     id: 9,
     title: 'Doppelcarport Premium',
     category: 'Carport',
-    image: 'https://images.unsplash.com/photo-1600573472556-e636c2acde0e?w=800&h=600&fit=crop',
+    image: 'https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?w=800&h=600&fit=crop',
     description: 'Premium Doppelcarport mit Abstellraum und Satteldach',
   },
   {
@@ -141,7 +141,7 @@ export function References() {
               key={category}
               variant={selectedCategory === category ? 'secondary' : 'outline'}
               onClick={() => setSelectedCategory(category)}
-              className={selectedCategory === category ? 'px-6 bg-primary-foreground text-primary hover:bg-primary-foreground/90' : 'px-6 bg-primary-foreground/10 text-primary-foreground border-primary-foreground/30 hover:bg-primary-foreground/20 hover:text-primary-foreground'}
+              className={selectedCategory === category ? 'px-6 bg-card text-card-foreground hover:bg-card/90' : 'px-6 bg-primary-foreground/10 text-primary-foreground border-primary-foreground/30 hover:bg-primary-foreground/20 hover:text-primary-foreground'}
             >
               {category}
             </Button>
@@ -204,7 +204,7 @@ export function References() {
       </div>
 
       <Dialog open={!!selectedProject} onOpenChange={() => setSelectedProject(null)}>
-        <DialogContent className="max-w-3xl">
+        <DialogContent className="max-w-3xl bg-card">
           {selectedProject && (
             <div className="space-y-4">
               <div className="relative aspect-[16/10] overflow-hidden rounded-lg">
