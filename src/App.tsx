@@ -11,6 +11,7 @@ import { Footer } from '@/components/Footer'
 import { Impressum } from '@/components/Impressum'
 import { Datenschutz } from '@/components/Datenschutz'
 import { AGB } from '@/components/AGB'
+import { ScrollToTop } from '@/components/ScrollToTop'
 
 type Page = 'home' | 'impressum' | 'datenschutz' | 'agb'
 
@@ -26,6 +27,7 @@ function App() {
     return (
       <>
         <Impressum onBack={() => navigateToPage('home')} />
+        <ScrollToTop />
         <Toaster position="top-right" />
       </>
     )
@@ -35,6 +37,7 @@ function App() {
     return (
       <>
         <Datenschutz onBack={() => navigateToPage('home')} />
+        <ScrollToTop />
         <Toaster position="top-right" />
       </>
     )
@@ -44,6 +47,7 @@ function App() {
     return (
       <>
         <AGB onBack={() => navigateToPage('home')} />
+        <ScrollToTop />
         <Toaster position="top-right" />
       </>
     )
@@ -65,6 +69,7 @@ function App() {
         onNavigateToDatenschutz={() => navigateToPage('datenschutz')}
         onNavigateToAGB={() => navigateToPage('agb')}
       />
+      <ScrollToTop />
       <Toaster position="top-right" />
     </div>
   )
