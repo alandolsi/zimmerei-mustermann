@@ -1,0 +1,66 @@
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Wrench, Envelope, ArrowLeft } from '@phosphor-icons/react'
+
+interface AdminDashboardProps {
+  onBack: () => void
+  onNavigateToServices: () => void
+  onNavigateToContacts: () => void
+}
+
+export function AdminDashboard({ onBack, onNavigateToServices, onNavigateToContacts }: AdminDashboardProps) {
+  return (
+    <div className="min-h-screen bg-background">
+      <div className="bg-primary text-primary-foreground py-6 px-4 shadow-md">
+        <div className="max-w-7xl mx-auto flex items-center justify-between">
+          <div>
+            <h1 className="text-3xl font-bold">Admin-Dashboard</h1>
+            <p className="text-primary-foreground/90 mt-1">Verwaltung Ihrer Website-Inhalte</p>
+          </div>
+          <Button variant="secondary" onClick={onBack}>
+            <ArrowLeft className="mr-2" />
+            Zurück zur Hauptseite
+          </Button>
+        </div>
+      </div>
+
+      <div className="max-w-7xl mx-auto px-4 py-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <Card className="hover:shadow-lg transition-shadow cursor-pointer" onClick={onNavigateToServices}>
+            <CardHeader>
+              <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
+                <Wrench className="w-6 h-6 text-primary" weight="duotone" />
+              </div>
+              <CardTitle className="text-2xl">Leistungen verwalten</CardTitle>
+              <CardDescription className="text-base">
+                Fügen Sie neue Leistungen hinzu, bearbeiten oder entfernen Sie bestehende Einträge
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Button className="w-full">
+                Zur Leistungsverwaltung
+              </Button>
+            </CardContent>
+          </Card>
+
+          <Card className="hover:shadow-lg transition-shadow cursor-pointer" onClick={onNavigateToContacts}>
+            <CardHeader>
+              <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
+                <Envelope className="w-6 h-6 text-primary" weight="duotone" />
+              </div>
+              <CardTitle className="text-2xl">Kontaktanfragen</CardTitle>
+              <CardDescription className="text-base">
+                Sehen Sie alle eingegangenen Kontaktanfragen und verwalten Sie diese
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Button className="w-full">
+                Zu den Anfragen
+              </Button>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    </div>
+  )
+}

@@ -5,9 +5,10 @@ interface FooterProps {
   onNavigateToImpressum: () => void
   onNavigateToDatenschutz: () => void
   onNavigateToAGB: () => void
+  onNavigateToAdmin?: () => void
 }
 
-export function Footer({ onNavigateToImpressum, onNavigateToDatenschutz, onNavigateToAGB }: FooterProps) {
+export function Footer({ onNavigateToImpressum, onNavigateToDatenschutz, onNavigateToAGB, onNavigateToAdmin }: FooterProps) {
   return (
     <footer className="bg-primary text-primary-foreground">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -95,6 +96,14 @@ export function Footer({ onNavigateToImpressum, onNavigateToDatenschutz, onNavig
             >
               AGB
             </button>
+            {onNavigateToAdmin && (
+              <button 
+                onClick={onNavigateToAdmin}
+                className="text-primary-foreground/80 hover:text-primary-foreground transition-colors font-semibold"
+              >
+                Admin
+              </button>
+            )}
           </div>
         </div>
       </div>
