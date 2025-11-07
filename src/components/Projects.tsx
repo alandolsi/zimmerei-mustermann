@@ -74,7 +74,7 @@ export function Projects() {
               transition={{ duration: 0.5, delay: index * 0.1 }}
             >
               <Card 
-                className="overflow-hidden cursor-pointer group h-full"
+                className="overflow-hidden cursor-pointer group h-full p-0"
                 onClick={() => setSelectedProject(project)}
               >
                 <div className="relative h-64 overflow-hidden">
