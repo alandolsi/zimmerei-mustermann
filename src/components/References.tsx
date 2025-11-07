@@ -111,7 +111,7 @@ export function References() {
     : projects.filter(project => project.category === selectedCategory)
 
   return (
-    <section id="references" className="py-16 md:py-24 bg-muted/30">
+    <section id="references" className="py-16 md:py-24 bg-primary">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
           <motion.div
@@ -120,10 +120,10 @@ export function References() {
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
           >
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-4">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-primary-foreground mb-4">
               Referenzen
             </h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+            <p className="text-lg text-primary-foreground/90 max-w-2xl mx-auto">
               Überzeugen Sie sich von unserer Arbeit - Qualität, die man sieht
             </p>
           </motion.div>
@@ -139,9 +139,9 @@ export function References() {
           {categories.map((category) => (
             <Button
               key={category}
-              variant={selectedCategory === category ? 'default' : 'outline'}
+              variant={selectedCategory === category ? 'secondary' : 'outline'}
               onClick={() => setSelectedCategory(category)}
-              className="px-6"
+              className={selectedCategory === category ? 'px-6' : 'px-6 bg-primary-foreground/10 text-primary-foreground border-primary-foreground/30 hover:bg-primary-foreground/20 hover:text-primary-foreground'}
             >
               {category}
             </Button>
@@ -163,9 +163,10 @@ export function References() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4, delay: index * 0.05 }}
+                className="h-full"
               >
                 <Card
-                  className="group cursor-pointer overflow-hidden hover:shadow-xl transition-all duration-300 h-full flex flex-col"
+                  className="group cursor-pointer overflow-hidden hover:shadow-xl transition-all duration-300 h-full flex flex-col p-0"
                   onClick={() => setSelectedProject(project)}
                 >
                   <div className="relative aspect-[4/3] overflow-hidden">
@@ -195,7 +196,7 @@ export function References() {
 
         {filteredProjects.length === 0 && (
           <div className="text-center py-12">
-            <p className="text-muted-foreground text-lg">
+            <p className="text-primary-foreground/80 text-lg">
               Keine Projekte in dieser Kategorie gefunden.
             </p>
           </div>
