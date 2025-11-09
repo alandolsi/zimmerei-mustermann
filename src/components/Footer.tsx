@@ -1,5 +1,7 @@
 import { Separator } from '@/components/ui/separator'
 import { Phone, Envelope, MapPin } from '@phosphor-icons/react'
+import { useKV } from '@github/spark/hooks'
+import type { Service } from './ServicesAdmin'
 
 interface FooterProps {
   onNavigateToImpressum: () => void
@@ -8,7 +10,49 @@ interface FooterProps {
   onNavigateToAdmin?: () => void
 }
 
+const defaultServices: Service[] = [
+  {
+    id: '1',
+    icon: 'House',
+    title: 'Dachstuhl',
+    description: 'Traditionelle und moderne Dachkonstruktionen nach Ihren Wünschen - vom klassischen Satteldach bis zu komplexen Dachformen.',
+  },
+  {
+    id: '2',
+    icon: 'TreeEvergreen',
+    title: 'Holzbau',
+    description: 'Hochwertige Holzkonstruktionen für Wohn- und Gewerbebau. Nachhaltig, ökologisch und energieeffizient.',
+  },
+  {
+    id: '3',
+    icon: 'ArrowsClockwise',
+    title: 'Sanierung',
+    description: 'Fachgerechte Sanierung und Modernisierung von Altbauten und historischen Gebäuden mit viel Erfahrung.',
+  },
+  {
+    id: '4',
+    icon: 'Hammer',
+    title: 'Zimmererarbeiten',
+    description: 'Professionelle Zimmerarbeiten aller Art - von der Planung bis zur Ausführung alles aus einer Hand.',
+  },
+  {
+    id: '5',
+    icon: 'Buildings',
+    title: 'Anbauten',
+    description: 'Wohnraumerweiterungen in Holzbauweise - Garagen, Carports, Wintergärten und Terrassenüberdachungen.',
+  },
+  {
+    id: '6',
+    icon: 'Wrench',
+    title: 'Reparaturen',
+    description: 'Schnelle und zuverlässige Reparaturen an Dach und Holzkonstruktionen. Notdienst verfügbar.',
+  },
+]
+
 export function Footer({ onNavigateToImpressum, onNavigateToDatenschutz, onNavigateToAGB, onNavigateToAdmin }: FooterProps) {
+  const [services] = useKV<Service[]>('services-list', defaultServices)
+  const displayServices = services || defaultServices
+
   return (
     <footer className="bg-primary text-primary-foreground">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -42,22 +86,12 @@ export function Footer({ onNavigateToImpressum, onNavigateToDatenschutz, onNavig
           <div>
             <h3 className="text-xl font-bold mb-4">Leistungen</h3>
             <ul className="space-y-2 text-primary-foreground/90">
-              <li className="flex items-start">
-                <span className="mr-2">•</span>
-                <span>Dachstühle & Holzkonstruktionen</span>
-              </li>
-              <li className="flex items-start">
-                <span className="mr-2">•</span>
-                <span>Altbausanierung & Modernisierung</span>
-              </li>
-              <li className="flex items-start">
-                <span className="mr-2">•</span>
-                <span>Carports & Pergolen</span>
-              </li>
-              <li className="flex items-start">
-                <span className="mr-2">•</span>
-                <span>Holzrahmenbau & Aufstockungen</span>
-              </li>
+              {displayServices.map((service) => (
+                <li key={service.id} className="flex items-start">
+                  <span className="mr-2">•</span>
+                  <span>{service.title}</span>
+                </li>
+              ))}
             </ul>
           </div>
         </div>
