@@ -1,5 +1,5 @@
 import { Separator } from '@/components/ui/separator'
-import { Phone, Envelope, MapPin } from '@phosphor-icons/react'
+import { Phone, Envelope, MapPin, House, TreeEvergreen, ArrowsClockwise, Hammer, Buildings, Wrench } from '@phosphor-icons/react'
 import { useKV } from '@github/spark/hooks'
 import type { Service } from './ServicesAdmin'
 
@@ -86,12 +86,24 @@ export function Footer({ onNavigateToImpressum, onNavigateToDatenschutz, onNavig
           <div>
             <h3 className="text-xl font-bold mb-4">Leistungen</h3>
             <ul className="space-y-2 text-primary-foreground/90">
-              {displayServices.map((service) => (
-                <li key={service.id} className="flex items-start">
-                  <span className="mr-2">•</span>
-                  <span>{service.title}</span>
-                </li>
-              ))}
+              {displayServices.map((service) => {
+                const iconMap: Record<string, any> = {
+                  House,
+                  TreeEvergreen,
+                  ArrowsClockwise,
+                  Hammer,
+                  Buildings,
+                  Wrench,
+                }
+                const IconComponent = iconMap[service.icon] || House
+                
+                return (
+                  <li key={service.id} className="flex items-center gap-2">
+                    <IconComponent className="w-4 h-4 flex-shrink-0" weight="duotone" />
+                    <span>{service.title}</span>
+                  </li>
+                )
+              })}
             </ul>
           </div>
         </div>
