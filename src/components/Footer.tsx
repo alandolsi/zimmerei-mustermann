@@ -53,6 +53,13 @@ export function Footer({ onNavigateToImpressum, onNavigateToDatenschutz, onNavig
   const [services] = useKV<Service[]>('services-list', defaultServices)
   const displayServices = services || defaultServices
 
+  const scrollToServices = () => {
+    const servicesSection = document.getElementById('services')
+    if (servicesSection) {
+      servicesSection.scrollIntoView({ behavior: 'smooth' })
+    }
+  }
+
   return (
     <footer className="bg-primary text-primary-foreground">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -100,7 +107,12 @@ export function Footer({ onNavigateToImpressum, onNavigateToDatenschutz, onNavig
                 return (
                   <li key={service.id} className="flex items-center gap-2">
                     <IconComponent className="w-4 h-4 flex-shrink-0" weight="duotone" />
-                    <span>{service.title}</span>
+                    <button
+                      onClick={scrollToServices}
+                      className="text-left hover:text-primary-foreground transition-colors hover:underline"
+                    >
+                      {service.title}
+                    </button>
                   </li>
                 )
               })}
