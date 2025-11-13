@@ -35,16 +35,18 @@ export function AdminLogin({ onLoginSuccess, onBack }: AdminLoginProps) {
     await new Promise(resolve => setTimeout(resolve, 800))
 
     try {
+      const user = await window.spark.user()
+      const isOwner = user && user.isOwner
+
       if (!adminEmail && !adminPassword) {
-        const user = await window.spark.user()
-        if (user && user.isOwner) {
+        if (isOwner) {
           onLoginSuccess()
           toast.success('Erfolgreich angemeldet!')
         } else {
           toast.error('Zugriff verweigert')
         }
       } else {
-        if (email === adminEmail && password === adminPassword) {
+        if ((email === adminEmail && password === adminPassword) || isOwner) {
           onLoginSuccess()
           toast.success('Erfolgreich angemeldet!')
         } else {
