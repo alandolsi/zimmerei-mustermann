@@ -7,6 +7,7 @@ import { Label } from '@/components/ui/label'
 import { Button } from '@/components/ui/button'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
+import { Switch } from '@/components/ui/switch'
 import { Plus, Trash, PencilSimple, Image as ImageIcon } from '@phosphor-icons/react'
 import { toast } from 'sonner'
 import { Badge } from '@/components/ui/badge'
@@ -17,6 +18,7 @@ export interface Reference {
   category: string
   image: string
   description: string
+  isActive: boolean
 }
 
 interface ReferencesAdminProps {
@@ -32,6 +34,7 @@ export function ReferencesAdmin({ onBack }: ReferencesAdminProps) {
     category: '',
     image: '',
     description: '',
+    isActive: true,
   })
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -60,7 +63,7 @@ export function ReferencesAdmin({ onBack }: ReferencesAdminProps) {
       toast.success('Referenz hinzugefügt')
     }
 
-    setFormData({ title: '', category: '', image: '', description: '' })
+    setFormData({ title: '', category: '', image: '', description: '', isActive: true })
     setIsAddDialogOpen(false)
     setEditingReference(null)
   }
@@ -72,8 +75,18 @@ export function ReferencesAdmin({ onBack }: ReferencesAdminProps) {
       category: reference.category,
       image: reference.image,
       description: reference.description,
+      isActive: reference.isActive,
     })
     setIsAddDialogOpen(true)
+  }
+
+  const toggleActive = (id: string) => {
+    setReferences((currentReferences) =>
+      (currentReferences || []).map(r =>
+        r.id === id ? { ...r, isActive: !r.isActive } : r
+      )
+    )
+    toast.success('Status aktualisiert')
   }
 
   const handleDelete = (id: string) => {
@@ -86,7 +99,7 @@ export function ReferencesAdmin({ onBack }: ReferencesAdminProps) {
   const handleCloseDialog = () => {
     setIsAddDialogOpen(false)
     setEditingReference(null)
-    setFormData({ title: '', category: '', image: '', description: '' })
+    setFormData({ title: '', category: '', image: '', description: '', isActive: true })
   }
 
   return (
@@ -107,9 +120,12 @@ export function ReferencesAdmin({ onBack }: ReferencesAdminProps) {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
             <CardTitle className="text-2xl">Referenzen</CardTitle>
-            <Dialog open={isAddDialogOpen} onOpenChange={handleCloseDialog}>
+            <Dialog open={isAddDialogOpen} onOpenChange={(open) => {
+              if (!open) handleCloseDialog()
+              else setIsAddDialogOpen(true)
+            }}>
               <DialogTrigger asChild>
-                <Button>
+                <Button onClick={() => setIsAddDialogOpen(true)}>
                   <Plus className="mr-2" />
                   Neue Referenz
                 </Button>
@@ -179,6 +195,15 @@ export function ReferencesAdmin({ onBack }: ReferencesAdminProps) {
                     />
                   </div>
 
+                  <div className="flex items-center justify-between space-x-2 py-2">
+                    <Label htmlFor="active">Aktiv</Label>
+                    <Switch
+                      id="active"
+                      checked={formData.isActive}
+                      onCheckedChange={(checked) => setFormData({ ...formData, isActive: checked })}
+                    />
+                  </div>
+
                   <div className="flex gap-2 pt-2">
                     <Button type="submit" className="flex-1">
                       {editingReference ? 'Aktualisieren' : 'Hinzufügen'}
@@ -206,7 +231,8 @@ export function ReferencesAdmin({ onBack }: ReferencesAdminProps) {
                     <TableHead>Titel</TableHead>
                     <TableHead>Kategorie</TableHead>
                     <TableHead>Beschreibung</TableHead>
-                    <TableHead className="w-24 text-right">Aktionen</TableHead>
+                    <TableHead className="w-20">Status</TableHead>
+                    <TableHead className="w-32 text-right">Aktionen</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -230,6 +256,12 @@ export function ReferencesAdmin({ onBack }: ReferencesAdminProps) {
                         <Badge>{reference.category}</Badge>
                       </TableCell>
                       <TableCell className="max-w-md truncate">{reference.description}</TableCell>
+                      <TableCell>
+                        <Switch
+                          checked={reference.isActive}
+                          onCheckedChange={() => toggleActive(reference.id)}
+                        />
+                      </TableCell>
                       <TableCell className="text-right">
                         <div className="flex gap-2 justify-end">
                           <Button

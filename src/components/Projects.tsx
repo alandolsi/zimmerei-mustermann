@@ -4,14 +4,7 @@ import { Card, CardContent } from '@/components/ui/card'
 import { Dialog, DialogContent } from '@/components/ui/dialog'
 import { Badge } from '@/components/ui/badge'
 import { motion } from 'framer-motion'
-
-interface Project {
-  id: string
-  title: string
-  category: string
-  image: string
-  description: string
-}
+import type { Project } from './ProjectsAdmin'
 
 const defaultProjects: Project[] = [
   {
@@ -20,6 +13,7 @@ const defaultProjects: Project[] = [
     category: 'Dachstuhl',
     image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=800',
     description: 'Moderner Dachstuhl mit Gaube für ein Einfamilienhaus in München',
+    isActive: true,
   },
   {
     id: '2',
@@ -27,6 +21,7 @@ const defaultProjects: Project[] = [
     category: 'Holzbau',
     image: 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?q=80&w=800',
     description: 'Freistehender Carport in hochwertiger Holzbauweise',
+    isActive: true,
   },
   {
     id: '3',
@@ -34,6 +29,7 @@ const defaultProjects: Project[] = [
     category: 'Sanierung',
     image: 'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?q=80&w=800',
     description: 'Komplette Dachsanierung eines denkmalgeschützten Gebäudes',
+    isActive: true,
   },
   {
     id: '4',
@@ -41,6 +37,7 @@ const defaultProjects: Project[] = [
     category: 'Anbauten',
     image: 'https://images.unsplash.com/photo-1600607687644-c7171b42498f?q=80&w=800',
     description: 'Elegante Terrassenüberdachung mit integrierter Beleuchtung',
+    isActive: true,
   },
   {
     id: '5',
@@ -48,6 +45,7 @@ const defaultProjects: Project[] = [
     category: 'Holzbau',
     image: 'https://images.unsplash.com/photo-1600573472591-ee6b68d14c68?q=80&w=800',
     description: 'Große Holzkonstruktion für einen Gewerbebetrieb',
+    isActive: true,
   },
   {
     id: '6',
@@ -55,6 +53,7 @@ const defaultProjects: Project[] = [
     category: 'Anbauten',
     image: 'https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?q=80&w=800',
     description: 'Wintergarten mit Holzrahmenkonstruktion',
+    isActive: true,
   },
 ]
 
@@ -62,7 +61,7 @@ export function Projects() {
   const [projects] = useKV<Project[]>('projects-list', defaultProjects)
   const [selectedProject, setSelectedProject] = useState<Project | null>(null)
 
-  const displayProjects = projects || defaultProjects
+  const displayProjects = (projects || defaultProjects).filter(project => project.isActive)
 
   return (
     <section id="projects" className="py-16 md:py-24 bg-primary">

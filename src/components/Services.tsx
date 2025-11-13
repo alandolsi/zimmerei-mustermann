@@ -10,42 +10,48 @@ const defaultServices: Service[] = [
     icon: 'House',
     title: 'Dachstuhl',
     description: 'Traditionelle und moderne Dachkonstruktionen nach Ihren Wünschen - vom klassischen Satteldach bis zu komplexen Dachformen.',
+    isActive: true,
   },
   {
     id: '2',
     icon: 'TreeEvergreen',
     title: 'Holzbau',
     description: 'Hochwertige Holzkonstruktionen für Wohn- und Gewerbebau. Nachhaltig, ökologisch und energieeffizient.',
+    isActive: true,
   },
   {
     id: '3',
     icon: 'ArrowsClockwise',
     title: 'Sanierung',
     description: 'Fachgerechte Sanierung und Modernisierung von Altbauten und historischen Gebäuden mit viel Erfahrung.',
+    isActive: true,
   },
   {
     id: '4',
     icon: 'Hammer',
     title: 'Zimmererarbeiten',
     description: 'Professionelle Zimmerarbeiten aller Art - von der Planung bis zur Ausführung alles aus einer Hand.',
+    isActive: true,
   },
   {
     id: '5',
     icon: 'Buildings',
     title: 'Anbauten',
     description: 'Wohnraumerweiterungen in Holzbauweise - Garagen, Carports, Wintergärten und Terrassenüberdachungen.',
+    isActive: true,
   },
   {
     id: '6',
     icon: 'Wrench',
     title: 'Reparaturen',
     description: 'Schnelle und zuverlässige Reparaturen an Dach und Holzkonstruktionen. Notdienst verfügbar.',
+    isActive: true,
   },
 ]
 
 export function Services() {
   const [services] = useKV<Service[]>('services-list', defaultServices)
-  const displayServices = services || defaultServices
+  const displayServices = (services || defaultServices).filter(service => service.isActive)
 
   return (
     <section id="services" className="py-16 md:py-24 bg-card">

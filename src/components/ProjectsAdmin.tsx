@@ -7,6 +7,7 @@ import { Label } from '@/components/ui/label'
 import { Button } from '@/components/ui/button'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
+import { Switch } from '@/components/ui/switch'
 import { Plus, Trash, PencilSimple, Image as ImageIcon } from '@phosphor-icons/react'
 import { toast } from 'sonner'
 import { Badge } from '@/components/ui/badge'
@@ -17,6 +18,7 @@ export interface Project {
   category: string
   image: string
   description: string
+  isActive: boolean
 }
 
 interface ProjectsAdminProps {
@@ -32,6 +34,7 @@ export function ProjectsAdmin({ onBack }: ProjectsAdminProps) {
     category: '',
     image: '',
     description: '',
+    isActive: true,
   })
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -60,7 +63,7 @@ export function ProjectsAdmin({ onBack }: ProjectsAdminProps) {
       toast.success('Projekt hinzugefügt')
     }
 
-    setFormData({ title: '', category: '', image: '', description: '' })
+    setFormData({ title: '', category: '', image: '', description: '', isActive: true })
     setIsAddDialogOpen(false)
     setEditingProject(null)
   }
@@ -72,8 +75,18 @@ export function ProjectsAdmin({ onBack }: ProjectsAdminProps) {
       category: project.category,
       image: project.image,
       description: project.description,
+      isActive: project.isActive,
     })
     setIsAddDialogOpen(true)
+  }
+
+  const toggleActive = (id: string) => {
+    setProjects((currentProjects) =>
+      (currentProjects || []).map(p =>
+        p.id === id ? { ...p, isActive: !p.isActive } : p
+      )
+    )
+    toast.success('Status aktualisiert')
   }
 
   const handleDelete = (id: string) => {
@@ -86,7 +99,7 @@ export function ProjectsAdmin({ onBack }: ProjectsAdminProps) {
   const handleCloseDialog = () => {
     setIsAddDialogOpen(false)
     setEditingProject(null)
-    setFormData({ title: '', category: '', image: '', description: '' })
+    setFormData({ title: '', category: '', image: '', description: '', isActive: true })
   }
 
   return (
@@ -107,9 +120,12 @@ export function ProjectsAdmin({ onBack }: ProjectsAdminProps) {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
             <CardTitle className="text-2xl">Projekte</CardTitle>
-            <Dialog open={isAddDialogOpen} onOpenChange={handleCloseDialog}>
+            <Dialog open={isAddDialogOpen} onOpenChange={(open) => {
+              if (!open) handleCloseDialog()
+              else setIsAddDialogOpen(true)
+            }}>
               <DialogTrigger asChild>
-                <Button>
+                <Button onClick={() => setIsAddDialogOpen(true)}>
                   <Plus className="mr-2" />
                   Neues Projekt
                 </Button>
@@ -179,6 +195,15 @@ export function ProjectsAdmin({ onBack }: ProjectsAdminProps) {
                     />
                   </div>
 
+                  <div className="flex items-center justify-between space-x-2 py-2">
+                    <Label htmlFor="active">Aktiv</Label>
+                    <Switch
+                      id="active"
+                      checked={formData.isActive}
+                      onCheckedChange={(checked) => setFormData({ ...formData, isActive: checked })}
+                    />
+                  </div>
+
                   <div className="flex gap-2 pt-2">
                     <Button type="submit" className="flex-1">
                       {editingProject ? 'Aktualisieren' : 'Hinzufügen'}
@@ -206,7 +231,8 @@ export function ProjectsAdmin({ onBack }: ProjectsAdminProps) {
                     <TableHead>Titel</TableHead>
                     <TableHead>Kategorie</TableHead>
                     <TableHead>Beschreibung</TableHead>
-                    <TableHead className="w-24 text-right">Aktionen</TableHead>
+                    <TableHead className="w-20">Status</TableHead>
+                    <TableHead className="w-32 text-right">Aktionen</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -230,6 +256,12 @@ export function ProjectsAdmin({ onBack }: ProjectsAdminProps) {
                         <Badge>{project.category}</Badge>
                       </TableCell>
                       <TableCell className="max-w-md truncate">{project.description}</TableCell>
+                      <TableCell>
+                        <Switch
+                          checked={project.isActive}
+                          onCheckedChange={() => toggleActive(project.id)}
+                        />
+                      </TableCell>
                       <TableCell className="text-right">
                         <div className="flex gap-2 justify-end">
                           <Button

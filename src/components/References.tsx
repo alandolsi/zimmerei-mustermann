@@ -5,14 +5,7 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Dialog, DialogContent } from '@/components/ui/dialog'
 import { motion, AnimatePresence } from 'framer-motion'
-
-interface Reference {
-  id: string
-  title: string
-  category: string
-  image: string
-  description: string
-}
+import type { Reference } from './ReferencesAdmin'
 
 const defaultReferences: Reference[] = [
   {
@@ -21,6 +14,7 @@ const defaultReferences: Reference[] = [
     category: 'Dachstuhl',
     image: 'https://images.unsplash.com/photo-1632778149955-e80f8ceca2e8?w=800&h=600&fit=crop',
     description: 'Kompletter Dachstuhl für ein modernes Einfamilienhaus mit Satteldach',
+    isActive: true,
   },
   {
     id: '2',
@@ -28,6 +22,7 @@ const defaultReferences: Reference[] = [
     category: 'Carport',
     image: 'https://images.unsplash.com/photo-1588880331179-bc9b93a8cb5e?w=800&h=600&fit=crop',
     description: 'Maßgefertigter Carport aus massivem Holz für zwei Fahrzeuge',
+    isActive: true,
   },
   {
     id: '3',
@@ -35,6 +30,7 @@ const defaultReferences: Reference[] = [
     category: 'Terrasse',
     image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&h=600&fit=crop',
     description: 'Elegante Terrassenüberdachung mit Holz-Glas-Konstruktion',
+    isActive: true,
   },
   {
     id: '4',
@@ -42,6 +38,7 @@ const defaultReferences: Reference[] = [
     category: 'Fassade',
     image: 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=800&h=600&fit=crop',
     description: 'Moderne Holzfassade mit nachhaltiger Lärchenverkleidung',
+    isActive: true,
   },
   {
     id: '5',
@@ -49,6 +46,7 @@ const defaultReferences: Reference[] = [
     category: 'Dachstuhl',
     image: 'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=800&h=600&fit=crop',
     description: 'Sanierung und Verstärkung eines historischen Dachstuhls',
+    isActive: true,
   },
   {
     id: '6',
@@ -56,6 +54,7 @@ const defaultReferences: Reference[] = [
     category: 'Holzbau',
     image: 'https://images.unsplash.com/photo-1600607687644-c7171b42498f?w=800&h=600&fit=crop',
     description: 'Maßgefertigtes Gartenhaus in nachhaltiger Holzbauweise',
+    isActive: true,
   },
   {
     id: '7',
@@ -63,6 +62,7 @@ const defaultReferences: Reference[] = [
     category: 'Dachstuhl',
     image: 'https://images.unsplash.com/photo-1600566752355-35792bedcfea?w=800&h=600&fit=crop',
     description: 'Walmdachkonstruktion für Neubau-Einfamilienhaus',
+    isActive: true,
   },
   {
     id: '8',
@@ -70,6 +70,7 @@ const defaultReferences: Reference[] = [
     category: 'Terrasse',
     image: 'https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?w=800&h=600&fit=crop',
     description: 'Großzügige Holzterrasse mit integrierter Pergola',
+    isActive: true,
   },
   {
     id: '9',
@@ -77,6 +78,7 @@ const defaultReferences: Reference[] = [
     category: 'Carport',
     image: 'https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?w=800&h=600&fit=crop',
     description: 'Premium Doppelcarport mit Abstellraum und Satteldach',
+    isActive: true,
   },
   {
     id: '10',
@@ -84,6 +86,7 @@ const defaultReferences: Reference[] = [
     category: 'Holzbau',
     image: 'https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?w=800&h=600&fit=crop',
     description: 'Moderner Holzanbau mit großflächiger Verglasung',
+    isActive: true,
   },
   {
     id: '11',
@@ -91,6 +94,7 @@ const defaultReferences: Reference[] = [
     category: 'Fassade',
     image: 'https://images.unsplash.com/photo-1600585152915-d208bec867a1?w=800&h=600&fit=crop',
     description: 'Komplettsanierung mit moderner Holzfassade',
+    isActive: true,
   },
   {
     id: '12',
@@ -98,6 +102,7 @@ const defaultReferences: Reference[] = [
     category: 'Terrasse',
     image: 'https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=800&h=600&fit=crop',
     description: 'Freistehende Gartenpergola aus massivem Eichenholz',
+    isActive: true,
   },
 ]
 
@@ -106,12 +111,12 @@ export function References() {
   const [selectedCategory, setSelectedCategory] = useState('Alle')
   const [selectedProject, setSelectedProject] = useState<Reference | null>(null)
 
-  const displayReferences = references || defaultReferences
-  const allCategories = ['Alle', ...new Set(displayReferences.map(ref => ref.category))]
+  const activeReferences = (references || defaultReferences).filter(ref => ref.isActive)
+  const allCategories = ['Alle', ...new Set(activeReferences.map(ref => ref.category))]
 
   const filteredProjects = selectedCategory === 'Alle'
-    ? displayReferences
-    : displayReferences.filter(project => project.category === selectedCategory)
+    ? activeReferences
+    : activeReferences.filter(project => project.category === selectedCategory)
 
   return (
     <section id="references" className="py-16 md:py-24 bg-primary">

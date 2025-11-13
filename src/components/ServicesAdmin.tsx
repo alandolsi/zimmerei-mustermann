@@ -8,7 +8,8 @@ import { Button } from '@/components/ui/button'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { Plus, Trash, PencilSimple } from '@phosphor-icons/react'
+import { Switch } from '@/components/ui/switch'
+import { Plus, Trash, PencilSimple, Eye, EyeSlash } from '@phosphor-icons/react'
 import { toast } from 'sonner'
 import * as Icons from '@phosphor-icons/react'
 
@@ -17,6 +18,7 @@ export interface Service {
   icon: string
   title: string
   description: string
+  isActive: boolean
 }
 
 const availableIcons = [
@@ -37,6 +39,7 @@ export function ServicesAdmin({ onBack }: ServicesAdminProps) {
     icon: 'House',
     title: '',
     description: '',
+    isActive: true,
   })
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -65,7 +68,7 @@ export function ServicesAdmin({ onBack }: ServicesAdminProps) {
       toast.success('Leistung hinzugefügt')
     }
 
-    setFormData({ icon: 'House', title: '', description: '' })
+    setFormData({ icon: 'House', title: '', description: '', isActive: true })
     setIsAddDialogOpen(false)
     setEditingService(null)
   }
@@ -76,8 +79,18 @@ export function ServicesAdmin({ onBack }: ServicesAdminProps) {
       icon: service.icon,
       title: service.title,
       description: service.description,
+      isActive: service.isActive,
     })
     setIsAddDialogOpen(true)
+  }
+
+  const toggleActive = (id: string) => {
+    setServices((currentServices) =>
+      (currentServices || []).map(s =>
+        s.id === id ? { ...s, isActive: !s.isActive } : s
+      )
+    )
+    toast.success('Status aktualisiert')
   }
 
   const handleDelete = (id: string) => {
@@ -90,7 +103,7 @@ export function ServicesAdmin({ onBack }: ServicesAdminProps) {
   const handleCloseDialog = () => {
     setIsAddDialogOpen(false)
     setEditingService(null)
-    setFormData({ icon: 'House', title: '', description: '' })
+    setFormData({ icon: 'House', title: '', description: '', isActive: true })
   }
 
   return (
@@ -111,9 +124,12 @@ export function ServicesAdmin({ onBack }: ServicesAdminProps) {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
             <CardTitle className="text-2xl">Leistungen</CardTitle>
-            <Dialog open={isAddDialogOpen} onOpenChange={handleCloseDialog}>
+            <Dialog open={isAddDialogOpen} onOpenChange={(open) => {
+              if (!open) handleCloseDialog()
+              else setIsAddDialogOpen(true)
+            }}>
               <DialogTrigger asChild>
-                <Button>
+                <Button onClick={() => setIsAddDialogOpen(true)}>
                   <Plus className="mr-2" />
                   Neue Leistung
                 </Button>
@@ -173,6 +189,15 @@ export function ServicesAdmin({ onBack }: ServicesAdminProps) {
                     />
                   </div>
 
+                  <div className="flex items-center justify-between space-x-2 py-2">
+                    <Label htmlFor="active">Aktiv</Label>
+                    <Switch
+                      id="active"
+                      checked={formData.isActive}
+                      onCheckedChange={(checked) => setFormData({ ...formData, isActive: checked })}
+                    />
+                  </div>
+
                   <div className="flex gap-2 pt-2">
                     <Button type="submit" className="flex-1">
                       {editingService ? 'Aktualisieren' : 'Hinzufügen'}
@@ -198,7 +223,8 @@ export function ServicesAdmin({ onBack }: ServicesAdminProps) {
                     <TableHead className="w-12">Icon</TableHead>
                     <TableHead>Titel</TableHead>
                     <TableHead>Beschreibung</TableHead>
-                    <TableHead className="w-24 text-right">Aktionen</TableHead>
+                    <TableHead className="w-20">Status</TableHead>
+                    <TableHead className="w-32 text-right">Aktionen</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -215,6 +241,12 @@ export function ServicesAdmin({ onBack }: ServicesAdminProps) {
                         </TableCell>
                         <TableCell className="font-medium">{service.title}</TableCell>
                         <TableCell className="max-w-md truncate">{service.description}</TableCell>
+                        <TableCell>
+                          <Switch
+                            checked={service.isActive}
+                            onCheckedChange={() => toggleActive(service.id)}
+                          />
+                        </TableCell>
                         <TableCell className="text-right">
                           <div className="flex gap-2 justify-end">
                             <Button
