@@ -128,8 +128,8 @@ export function Footer({ onNavigateToImpressum, onNavigateToDatenschutz, onNavig
 
         <Separator className="bg-primary-foreground/20 mb-8" />
 
-        <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
-          <div className="flex flex-col items-center md:items-start space-y-2">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="flex flex-col items-center md:items-start space-y-2 md:col-span-2">
             <p className="text-primary-foreground/80 text-sm">
               © {new Date().getFullYear()} Zimmerei Mustermann. Alle Rechte vorbehalten.
             </p>
@@ -145,7 +145,7 @@ export function Footer({ onNavigateToImpressum, onNavigateToDatenschutz, onNavig
               </a>
             </p>
           </div>
-          <div className="flex space-x-6 text-sm">
+          <div className="flex flex-col items-center md:items-start space-y-2 text-sm">
             <button 
               onClick={onNavigateToImpressum}
               className="text-primary-foreground/80 hover:text-primary-foreground transition-colors"
