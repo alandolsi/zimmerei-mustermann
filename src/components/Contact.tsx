@@ -4,9 +4,10 @@ import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Label } from '@/components/ui/label'
 import { Button } from '@/components/ui/button'
-import { Phone, Envelope, MapPin } from '@phosphor-icons/react'
+import { Phone, Envelope, MapPin, MapTrifold } from '@phosphor-icons/react'
 import { toast } from 'sonner'
 import { motion } from 'framer-motion'
+import { useKV } from '@github/spark/hooks'
 
 interface ContactSubmission {
   id: string
@@ -19,6 +20,7 @@ interface ContactSubmission {
 
 export function Contact() {
   const [submissions, setSubmissions] = useState<ContactSubmission[]>([])
+  const [mapConsent, setMapConsent] = useKV<boolean>('google-maps-consent', false)
   
   useEffect(() => {
     const loadSubmissions = async () => {
@@ -154,22 +156,53 @@ export function Contact() {
             <Card className="border-2 bg-gradient-to-br from-accent/10 to-accent/5">
               <CardContent className="p-6">
                 <h4 className="font-semibold text-lg mb-3 flex items-center gap-2">
-                  <Phone className="w-5 h-5 text-accent" weight="bold" />
-                  Öffnungszeiten & Service
+                  <MapTrifold className="w-5 h-5 text-accent" weight="bold" />
+                  Standort
                 </h4>
-                <div className="space-y-3">
-                  <div>
-                    <p className="text-sm font-medium text-foreground">Geschäftszeiten</p>
-                    <p className="text-sm text-muted-foreground">Mo-Fr: 7:00 - 18:00 Uhr</p>
-                    <p className="text-sm text-muted-foreground">Sa: 8:00 - 14:00 Uhr</p>
+                {!mapConsent ? (
+                  <div className="space-y-4">
+                    <div className="bg-muted/50 rounded-lg p-4 border-2 border-dashed border-muted-foreground/20">
+                      <MapPin className="w-8 h-8 text-muted-foreground mx-auto mb-3" weight="duotone" />
+                      <p className="text-sm text-muted-foreground text-center mb-3">
+                        Um die Karte anzuzeigen, benötigen wir Ihre Einwilligung zum Laden von Google Maps.
+                      </p>
+                      <p className="text-xs text-muted-foreground/80 text-center mb-4">
+                        Durch das Laden der Karte werden Daten an Google übertragen.
+                      </p>
+                      <Button
+                        onClick={() => setMapConsent(true)}
+                        variant="outline"
+                        size="sm"
+                        className="w-full"
+                      >
+                        Karte laden & Einwilligung erteilen
+                      </Button>
+                    </div>
                   </div>
-                  <div className="pt-1">
-                    <p className="text-sm font-medium text-foreground mb-1">Kostenlose Erstberatung</p>
-                    <p className="text-xs text-muted-foreground">
-                      Unverbindliche Beratung vor Ort und detaillierte Kostenvoranschläge
-                    </p>
+                ) : (
+                  <div className="space-y-3">
+                    <div className="relative w-full h-[200px] rounded-lg overflow-hidden border-2 border-border">
+                      <iframe
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2428.1234567890!2d13.404954!3d52.520008!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNTLCsDMxJzEyLjAiTiAxM8KwMjQnMTcuOCJF!5e0!3m2!1sde!2sde!4v1234567890"
+                        width="100%"
+                        height="100%"
+                        style={{ border: 0 }}
+                        allowFullScreen
+                        loading="lazy"
+                        referrerPolicy="no-referrer-when-downgrade"
+                        title="Standort Zimmerei Mustermann"
+                      />
+                    </div>
+                    <Button
+                      onClick={() => setMapConsent(false)}
+                      variant="ghost"
+                      size="sm"
+                      className="w-full text-xs"
+                    >
+                      Karte ausblenden
+                    </Button>
                   </div>
-                </div>
+                )}
               </CardContent>
             </Card>
           </motion.div>
