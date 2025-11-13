@@ -12,7 +12,9 @@ interface AdminSettingsProps {
 }
 
 export function AdminSettings({ onBack }: AdminSettingsProps) {
+  const [adminEmail, setAdminEmail] = useKV<string>('admin-email', '')
   const [adminPassword, setAdminPassword] = useKV<string>('admin-password', '')
+  const [email, setEmail] = useState('')
   const [currentPassword, setCurrentPassword] = useState('')
   const [newPassword, setNewPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
@@ -31,6 +33,12 @@ export function AdminSettings({ onBack }: AdminSettingsProps) {
       return
     }
 
+    if (!email || !email.includes('@')) {
+      toast.error('Bitte geben Sie eine gültige E-Mail-Adresse ein')
+      setIsLoading(false)
+      return
+    }
+
     if (newPassword.length < 6) {
       toast.error('Das neue Passwort muss mindestens 6 Zeichen lang sein')
       setIsLoading(false)
@@ -45,9 +53,11 @@ export function AdminSettings({ onBack }: AdminSettingsProps) {
 
     await new Promise(resolve => setTimeout(resolve, 500))
 
+    setAdminEmail(email)
     setAdminPassword(newPassword)
-    toast.success('Passwort erfolgreich geändert!')
+    toast.success('Anmeldedaten erfolgreich gespeichert!')
     
+    setEmail('')
     setCurrentPassword('')
     setNewPassword('')
     setConfirmPassword('')
@@ -59,8 +69,10 @@ export function AdminSettings({ onBack }: AdminSettingsProps) {
       return
     }
 
+    setAdminEmail('')
     setAdminPassword('')
     toast.success('Passwortschutz entfernt')
+    setEmail('')
     setCurrentPassword('')
     setNewPassword('')
     setConfirmPassword('')
@@ -87,15 +99,32 @@ export function AdminSettings({ onBack }: AdminSettingsProps) {
             <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
               <Key className="w-6 h-6 text-primary" weight="duotone" />
             </div>
-            <CardTitle className="text-2xl">Passwort ändern</CardTitle>
+            <CardTitle className="text-2xl">Anmeldedaten verwalten</CardTitle>
             <CardDescription className="text-base">
               {adminPassword 
-                ? 'Ändern Sie Ihr Admin-Passwort oder entfernen Sie den Passwortschutz'
-                : 'Richten Sie ein Passwort für den Admin-Bereich ein'}
+                ? 'Ändern Sie Ihre Admin-Anmeldedaten oder entfernen Sie den Passwortschutz'
+                : 'Richten Sie E-Mail und Passwort für den Admin-Bereich ein'}
             </CardDescription>
           </CardHeader>
           <CardContent>
             <form onSubmit={handlePasswordChange} className="space-y-6">
+              <div className="space-y-2">
+                <Label htmlFor="admin-email">E-Mail-Adresse</Label>
+                <Input
+                  id="admin-email"
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder={adminEmail || "admin@beispiel.de"}
+                  required
+                />
+                {adminEmail && (
+                  <p className="text-sm text-muted-foreground">
+                    Aktuelle E-Mail: {adminEmail}
+                  </p>
+                )}
+              </div>
+
               {adminPassword && (
                 <div className="space-y-2">
                   <Label htmlFor="current-password">Aktuelles Passwort</Label>
@@ -180,7 +209,7 @@ export function AdminSettings({ onBack }: AdminSettingsProps) {
               <div className="flex gap-3">
                 <Button type="submit" className="flex-1" disabled={isLoading}>
                   <Check className="mr-2" />
-                  {isLoading ? 'Wird gespeichert...' : 'Passwort speichern'}
+                  {isLoading ? 'Wird gespeichert...' : 'Anmeldedaten speichern'}
                 </Button>
                 {adminPassword && (
                   <Button 
@@ -197,7 +226,7 @@ export function AdminSettings({ onBack }: AdminSettingsProps) {
             {!adminPassword && (
               <div className="mt-6 p-4 bg-muted rounded-lg">
                 <p className="text-sm text-muted-foreground">
-                  <strong>Hinweis:</strong> Wenn kein Passwort gesetzt ist, können nur Sie als Besitzer auf den Admin-Bereich zugreifen.
+                  <strong>Hinweis:</strong> Wenn keine Anmeldedaten gesetzt sind, können nur Sie als Besitzer auf den Admin-Bereich zugreifen.
                 </p>
               </div>
             )}

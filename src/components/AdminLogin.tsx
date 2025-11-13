@@ -13,9 +13,11 @@ interface AdminLoginProps {
 }
 
 export function AdminLogin({ onLoginSuccess, onBack }: AdminLoginProps) {
+  const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
+  const [adminEmail] = useKV<string>('admin-email', '')
   const [adminPassword] = useKV<string>('admin-password', '')
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -24,19 +26,26 @@ export function AdminLogin({ onLoginSuccess, onBack }: AdminLoginProps) {
 
     await new Promise(resolve => setTimeout(resolve, 800))
 
-    if (!adminPassword) {
+    try {
       const user = await window.spark.user()
-      if (user && user.isOwner) {
-        onLoginSuccess()
-        toast.success('Erfolgreich angemeldet!')
+      
+      if (!adminEmail && !adminPassword) {
+        if (user && user.isOwner) {
+          onLoginSuccess()
+          toast.success('Erfolgreich angemeldet!')
+        } else {
+          toast.error('Zugriff verweigert')
+        }
       } else {
-        toast.error('Zugriff verweigert')
+        if (email === adminEmail && password === adminPassword) {
+          onLoginSuccess()
+          toast.success('Erfolgreich angemeldet!')
+        } else {
+          toast.error('E-Mail oder Passwort falsch')
+        }
       }
-    } else if (password === adminPassword) {
-      onLoginSuccess()
-      toast.success('Erfolgreich angemeldet!')
-    } else {
-      toast.error('Falsches Passwort')
+    } catch (error) {
+      toast.error('Anmeldefehler')
     }
 
     setIsLoading(false)
@@ -56,6 +65,18 @@ export function AdminLogin({ onLoginSuccess, onBack }: AdminLoginProps) {
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-6">
+            <div className="space-y-2">
+              <Label htmlFor="admin-email">E-Mail</Label>
+              <Input
+                id="admin-email"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="admin@beispiel.de"
+                required
+              />
+            </div>
+
             <div className="space-y-2">
               <Label htmlFor="admin-password">Passwort</Label>
               <div className="relative">
