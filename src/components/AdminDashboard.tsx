@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Wrench, Envelope, ArrowLeft, FolderOpen, Images, Info } from '@phosphor-icons/react'
+import { Wrench, Envelope, ArrowLeft, FolderOpen, Images, Info, Gear, SignOut } from '@phosphor-icons/react'
 
 interface AdminDashboardProps {
   onBack: () => void
@@ -9,9 +9,11 @@ interface AdminDashboardProps {
   onNavigateToProjects: () => void
   onNavigateToReferences: () => void
   onNavigateToAbout: () => void
+  onNavigateToSettings: () => void
+  onLogout: () => void
 }
 
-export function AdminDashboard({ onBack, onNavigateToServices, onNavigateToContacts, onNavigateToProjects, onNavigateToReferences, onNavigateToAbout }: AdminDashboardProps) {
+export function AdminDashboard({ onBack, onNavigateToServices, onNavigateToContacts, onNavigateToProjects, onNavigateToReferences, onNavigateToAbout, onNavigateToSettings, onLogout }: AdminDashboardProps) {
   return (
     <div className="min-h-screen bg-background">
       <div className="bg-primary text-primary-foreground py-6 px-4 shadow-md">
@@ -20,10 +22,16 @@ export function AdminDashboard({ onBack, onNavigateToServices, onNavigateToConta
             <h1 className="text-3xl font-bold">Admin-Dashboard</h1>
             <p className="text-primary-foreground/90 mt-1">Verwaltung Ihrer Website-Inhalte</p>
           </div>
-          <Button variant="secondary" onClick={onBack}>
-            <ArrowLeft className="mr-2" />
-            Zurück zur Hauptseite
-          </Button>
+          <div className="flex gap-3">
+            <Button variant="secondary" onClick={onLogout}>
+              <SignOut className="mr-2" />
+              Abmelden
+            </Button>
+            <Button variant="secondary" onClick={onBack}>
+              <ArrowLeft className="mr-2" />
+              Zur Hauptseite
+            </Button>
+          </div>
         </div>
       </div>
 
@@ -110,6 +118,23 @@ export function AdminDashboard({ onBack, onNavigateToServices, onNavigateToConta
             <CardContent>
               <Button className="w-full">
                 Zu den Anfragen
+              </Button>
+            </CardContent>
+          </Card>
+
+          <Card className="hover:shadow-lg transition-shadow cursor-pointer" onClick={onNavigateToSettings}>
+            <CardHeader>
+              <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
+                <Gear className="w-6 h-6 text-primary" weight="duotone" />
+              </div>
+              <CardTitle className="text-2xl">Einstellungen</CardTitle>
+              <CardDescription className="text-base">
+                Verwalten Sie Ihr Admin-Passwort und weitere Einstellungen
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Button className="w-full">
+                Zu den Einstellungen
               </Button>
             </CardContent>
           </Card>

@@ -12,18 +12,21 @@ import { Impressum } from '@/components/Impressum'
 import { Datenschutz } from '@/components/Datenschutz'
 import { AGB } from '@/components/AGB'
 import { ScrollToTop } from '@/components/ScrollToTop'
+import { AdminLogin } from '@/components/AdminLogin'
 import { AdminDashboard } from '@/components/AdminDashboard'
+import { AdminSettings } from '@/components/AdminSettings'
 import { ServicesAdmin } from '@/components/ServicesAdmin'
 import { ContactAdmin } from '@/components/ContactAdmin'
 import { ProjectsAdmin } from '@/components/ProjectsAdmin'
 import { ReferencesAdmin } from '@/components/ReferencesAdmin'
 import { AboutAdmin } from '@/components/AboutAdmin'
 
-type Page = 'home' | 'impressum' | 'datenschutz' | 'agb' | 'admin' | 'admin-services' | 'admin-contacts' | 'admin-projects' | 'admin-references' | 'admin-about'
+type Page = 'home' | 'impressum' | 'datenschutz' | 'agb' | 'admin-login' | 'admin' | 'admin-settings' | 'admin-services' | 'admin-contacts' | 'admin-projects' | 'admin-references' | 'admin-about'
 
 function App() {
   const [currentPage, setCurrentPage] = useState<Page>('home')
   const [isOwner, setIsOwner] = useState(false)
+  const [isAdminAuthenticated, setIsAdminAuthenticated] = useState(false)
 
   useEffect(() => {
     const checkOwner = async () => {
@@ -44,16 +47,22 @@ function App() {
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
-  if (currentPage === 'admin' && isOwner) {
+  const handleLogout = () => {
+    setIsAdminAuthenticated(false)
+    navigateToPage('home')
+  }
+
+  const handleLoginSuccess = () => {
+    setIsAdminAuthenticated(true)
+    navigateToPage('admin')
+  }
+
+  if (currentPage === 'admin-login') {
     return (
       <>
-        <AdminDashboard 
+        <AdminLogin 
+          onLoginSuccess={handleLoginSuccess}
           onBack={() => navigateToPage('home')}
-          onNavigateToServices={() => navigateToPage('admin-services')}
-          onNavigateToContacts={() => navigateToPage('admin-contacts')}
-          onNavigateToProjects={() => navigateToPage('admin-projects')}
-          onNavigateToReferences={() => navigateToPage('admin-references')}
-          onNavigateToAbout={() => navigateToPage('admin-about')}
         />
         <ScrollToTop />
         <Toaster position="top-right" />
@@ -61,7 +70,36 @@ function App() {
     )
   }
 
-  if (currentPage === 'admin-services' && isOwner) {
+  if (currentPage === 'admin' && isAdminAuthenticated) {
+    return (
+      <>
+        <AdminDashboard 
+          onBack={() => navigateToPage('home')}
+          onLogout={handleLogout}
+          onNavigateToServices={() => navigateToPage('admin-services')}
+          onNavigateToContacts={() => navigateToPage('admin-contacts')}
+          onNavigateToProjects={() => navigateToPage('admin-projects')}
+          onNavigateToReferences={() => navigateToPage('admin-references')}
+          onNavigateToAbout={() => navigateToPage('admin-about')}
+          onNavigateToSettings={() => navigateToPage('admin-settings')}
+        />
+        <ScrollToTop />
+        <Toaster position="top-right" />
+      </>
+    )
+  }
+
+  if (currentPage === 'admin-settings' && isAdminAuthenticated) {
+    return (
+      <>
+        <AdminSettings onBack={() => navigateToPage('admin')} />
+        <ScrollToTop />
+        <Toaster position="top-right" />
+      </>
+    )
+  }
+
+  if (currentPage === 'admin-services' && isAdminAuthenticated) {
     return (
       <>
         <ServicesAdmin onBack={() => navigateToPage('admin')} />
@@ -71,7 +109,7 @@ function App() {
     )
   }
 
-  if (currentPage === 'admin-contacts' && isOwner) {
+  if (currentPage === 'admin-contacts' && isAdminAuthenticated) {
     return (
       <>
         <ContactAdmin onBack={() => navigateToPage('admin')} />
@@ -81,7 +119,7 @@ function App() {
     )
   }
 
-  if (currentPage === 'admin-projects' && isOwner) {
+  if (currentPage === 'admin-projects' && isAdminAuthenticated) {
     return (
       <>
         <ProjectsAdmin onBack={() => navigateToPage('admin')} />
@@ -91,7 +129,7 @@ function App() {
     )
   }
 
-  if (currentPage === 'admin-references' && isOwner) {
+  if (currentPage === 'admin-references' && isAdminAuthenticated) {
     return (
       <>
         <ReferencesAdmin onBack={() => navigateToPage('admin')} />
@@ -101,7 +139,7 @@ function App() {
     )
   }
 
-  if (currentPage === 'admin-about' && isOwner) {
+  if (currentPage === 'admin-about' && isAdminAuthenticated) {
     return (
       <>
         <AboutAdmin onBack={() => navigateToPage('admin')} />
@@ -156,7 +194,7 @@ function App() {
         onNavigateToImpressum={() => navigateToPage('impressum')}
         onNavigateToDatenschutz={() => navigateToPage('datenschutz')}
         onNavigateToAGB={() => navigateToPage('agb')}
-        onNavigateToAdmin={isOwner ? () => navigateToPage('admin') : undefined}
+        onNavigateToAdmin={isOwner ? () => navigateToPage('admin-login') : undefined}
       />
       <ScrollToTop />
       <Toaster position="top-right" />
