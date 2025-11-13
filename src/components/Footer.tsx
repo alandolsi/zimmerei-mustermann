@@ -145,7 +145,7 @@ export function Footer({ onNavigateToImpressum, onNavigateToDatenschutz, onNavig
               </a>
             </p>
           </div>
-          <div className="flex flex-col items-center md:items-start space-y-2 text-sm">
+          <div className="flex flex-wrap items-center md:items-start gap-x-4 gap-y-2 text-sm">
             <button 
               onClick={onNavigateToImpressum}
               className="text-primary-foreground/80 hover:text-primary-foreground transition-colors"
