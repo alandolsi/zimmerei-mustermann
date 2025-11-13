@@ -35,9 +35,8 @@ export function AdminLogin({ onLoginSuccess, onBack }: AdminLoginProps) {
     await new Promise(resolve => setTimeout(resolve, 800))
 
     try {
-      const user = await window.spark.user()
-      
       if (!adminEmail && !adminPassword) {
+        const user = await window.spark.user()
         if (user && user.isOwner) {
           onLoginSuccess()
           toast.success('Erfolgreich angemeldet!')
