@@ -53,8 +53,8 @@ export function AdminSettings({ onBack }: AdminSettingsProps) {
 
     await new Promise(resolve => setTimeout(resolve, 500))
 
-    setAdminEmail(email)
-    setAdminPassword(newPassword)
+    setAdminEmail(() => email)
+    setAdminPassword(() => newPassword)
     toast.success('Anmeldedaten erfolgreich gespeichert!')
     
     setEmail('')
@@ -69,8 +69,8 @@ export function AdminSettings({ onBack }: AdminSettingsProps) {
       return
     }
 
-    setAdminEmail('')
-    setAdminPassword('')
+    setAdminEmail(() => '')
+    setAdminPassword(() => '')
     toast.success('Passwortschutz entfernt')
     setEmail('')
     setCurrentPassword('')
