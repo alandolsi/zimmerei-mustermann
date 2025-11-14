@@ -21,6 +21,7 @@ interface Slide {
 
 interface HeaderData {
   companyName: string
+  logo?: string
   slides: Slide[]
 }
 
@@ -51,11 +52,13 @@ const defaultHeaderData: HeaderData = {
 export function HeaderAdmin({ onBack }: HeaderAdminProps) {
   const [headerData, setHeaderData] = useKV<HeaderData>('header-data', defaultHeaderData)
   const [companyName, setCompanyName] = useState('')
+  const [logo, setLogo] = useState('')
   const [slides, setSlides] = useState<Slide[]>([])
 
   useEffect(() => {
     if (headerData) {
       setCompanyName(headerData.companyName)
+      setLogo(headerData.logo || '')
       setSlides(headerData.slides)
     }
   }, [headerData])
@@ -63,6 +66,7 @@ export function HeaderAdmin({ onBack }: HeaderAdminProps) {
   const handleSave = () => {
     setHeaderData(() => ({
       companyName,
+      logo: logo || undefined,
       slides,
     }))
     toast.success('Header-Daten erfolgreich gespeichert')
@@ -115,12 +119,12 @@ export function HeaderAdmin({ onBack }: HeaderAdminProps) {
       <div className="max-w-6xl mx-auto p-6 space-y-6">
         <Card>
           <CardHeader>
-            <CardTitle>Firmenname</CardTitle>
+            <CardTitle>Firmenidentität</CardTitle>
             <CardDescription>
-              Dieser Name wird im Header der Website angezeigt
+              Verwalten Sie den Firmennamen und das Logo
             </CardDescription>
           </CardHeader>
-          <CardContent>
+          <CardContent className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="company-name">Firmenname</Label>
               <Input
@@ -129,6 +133,54 @@ export function HeaderAdmin({ onBack }: HeaderAdminProps) {
                 onChange={(e) => setCompanyName(e.target.value)}
                 placeholder="z.B. Zimmerei Mustermann"
               />
+              <p className="text-xs text-muted-foreground">
+                Wird als Fallback angezeigt, wenn kein Logo vorhanden ist
+              </p>
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="logo-url">
+                <ImageIcon className="inline-block mr-2 h-4 w-4" />
+                Logo-URL (optional)
+              </Label>
+              <Input
+                id="logo-url"
+                value={logo}
+                onChange={(e) => setLogo(e.target.value)}
+                placeholder="https://example.com/logo.png"
+              />
+              <p className="text-xs text-muted-foreground">
+                Fügen Sie eine URL zu Ihrem Logo hinzu. Lassen Sie dieses Feld leer, um den Firmennamen anzuzeigen.
+              </p>
+              {logo && (
+                <div className="mt-4 p-4 border rounded-md bg-muted/30">
+                  <p className="text-sm font-medium mb-2">Vorschau:</p>
+                  <div className="flex gap-4 items-start">
+                    <div className="bg-white p-4 rounded-md">
+                      <p className="text-xs text-muted-foreground mb-2">Heller Hintergrund</p>
+                      <img
+                        src={logo}
+                        alt="Logo Vorschau"
+                        className="h-12 object-contain"
+                        onError={(e) => {
+                          e.currentTarget.style.display = 'none'
+                        }}
+                      />
+                    </div>
+                    <div className="bg-primary p-4 rounded-md">
+                      <p className="text-xs text-primary-foreground/80 mb-2">Dunkler Hintergrund</p>
+                      <img
+                        src={logo}
+                        alt="Logo Vorschau"
+                        className="h-12 object-contain"
+                        onError={(e) => {
+                          e.currentTarget.style.display = 'none'
+                        }}
+                      />
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
           </CardContent>
         </Card>

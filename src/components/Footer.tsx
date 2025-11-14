@@ -3,6 +3,12 @@ import { Phone, Envelope, MapPin, House, TreeEvergreen, ArrowsClockwise, Hammer,
 import { useKV } from '@github/spark/hooks'
 import type { Service } from './ServicesAdmin'
 
+interface HeaderData {
+  companyName: string
+  logo?: string
+  slides: any[]
+}
+
 interface FooterProps {
   onNavigateToImpressum: () => void
   onNavigateToDatenschutz: () => void
@@ -57,7 +63,11 @@ const defaultServices: Service[] = [
 
 export function Footer({ onNavigateToImpressum, onNavigateToDatenschutz, onNavigateToAGB, onNavigateToAdmin }: FooterProps) {
   const [services] = useKV<Service[]>('services-list', defaultServices)
+  const [headerData] = useKV<HeaderData>('header-data', { companyName: 'Zimmerei Mustermann', slides: [] })
+  
   const displayServices = (services || defaultServices).filter(service => service.isActive)
+  const companyName = headerData?.companyName || 'Zimmerei Mustermann'
+  const logo = headerData?.logo
 
   const scrollToServices = () => {
     const servicesSection = document.getElementById('services')
@@ -71,7 +81,19 @@ export function Footer({ onNavigateToImpressum, onNavigateToDatenschutz, onNavig
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
           <div>
-            <h3 className="text-xl font-bold mb-4">Zimmerei Mustermann</h3>
+            {logo ? (
+              <img 
+                src={logo} 
+                alt={companyName} 
+                className="h-12 w-auto object-contain mb-4 brightness-0 invert"
+                onError={(e) => {
+                  e.currentTarget.style.display = 'none'
+                }}
+              />
+            ) : (
+              <h3 className="text-xl font-bold mb-4">{companyName}</h3>
+            )}
+            {!logo && <div className="h-0" />}
             <p className="text-primary-foreground/90 leading-relaxed">
               Ihr Meisterbetrieb für Holzbau und Zimmererarbeiten. 
               Qualität und Präzision seit über 30 Jahren.
@@ -131,7 +153,7 @@ export function Footer({ onNavigateToImpressum, onNavigateToDatenschutz, onNavig
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div className="flex flex-col items-center md:items-start space-y-2 md:col-span-2">
             <p className="text-primary-foreground/80 text-sm">
-              © {new Date().getFullYear()} Zimmerei Mustermann. Alle Rechte vorbehalten.
+              © {new Date().getFullYear()} {companyName}. Alle Rechte vorbehalten.
             </p>
             <p className="text-primary-foreground/60 text-xs">
               Webdesign & Entwicklung by{' '}

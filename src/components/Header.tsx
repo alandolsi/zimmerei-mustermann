@@ -23,6 +23,7 @@ interface Slide {
 
 interface HeaderData {
   companyName: string
+  logo?: string
   slides: Slide[]
 }
 
@@ -60,6 +61,7 @@ export function Header() {
   const [currentSlide, setCurrentSlide] = useState(0)
 
   const companyName = headerData?.companyName || defaultHeaderData.companyName
+  const logo = headerData?.logo
   const carouselSlides = headerData?.slides || defaultHeaderData.slides
 
   useEffect(() => {
@@ -121,9 +123,24 @@ export function Header() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-20">
             <div className="flex-shrink-0">
-              <h1 className={`text-2xl font-bold transition-colors ${scrolled ? 'text-primary' : 'text-white'}`}>
-                {companyName}
-              </h1>
+              {logo ? (
+                <img 
+                  src={logo} 
+                  alt={companyName} 
+                  className={`h-12 w-auto object-contain transition-opacity ${scrolled ? 'opacity-100' : 'opacity-100'}`}
+                  onError={(e) => {
+                    e.currentTarget.style.display = 'none'
+                    const fallback = document.createElement('h1')
+                    fallback.className = `text-2xl font-bold transition-colors ${scrolled ? 'text-primary' : 'text-white'}`
+                    fallback.textContent = companyName
+                    e.currentTarget.parentElement?.appendChild(fallback)
+                  }}
+                />
+              ) : (
+                <h1 className={`text-2xl font-bold transition-colors ${scrolled ? 'text-primary' : 'text-white'}`}>
+                  {companyName}
+                </h1>
+              )}
             </div>
 
             <nav className="hidden md:flex space-x-8">
