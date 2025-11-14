@@ -1,21 +1,20 @@
 import { useState, useEffect } from 'react'
-import { Button } from '@/components/ui/but
-import { Label } from '@/components/ui/label'
-import { ArrowLeft, Key, Eye, EyeSlash, Check
+import { useKV } from '@github/spark/hooks'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { ArrowLeft, Key, Eye, EyeSlash, Check, Buildings, Image, Trash } from '@phosphor-icons/react'
 import { toast } from 'sonner'
 
+interface AdminSettingsProps {
+  onBack: () => void
+}
+
+interface HeaderData {
   companyName: string
   slides: any[]
-
-
-    companyName: 'Zimm
-  })
-  const [email,
-  const [newPas
- 
+}
 
 export function AdminSettings({ onBack }: AdminSettingsProps) {
   const [adminUser, setAdminUser] = useKV<{ email: string; password: string } | null>('user', null)
@@ -36,324 +35,304 @@ export function AdminSettings({ onBack }: AdminSettingsProps) {
   const [companyName, setCompanyName] = useState('')
   const [logoUrl, setLogoUrl] = useState('')
 
+  useEffect(() => {
+    if (adminUser) {
+      setEmail(adminUser.email)
     }
-    if (!email || !em
+  }, [adminUser])
+
+  useEffect(() => {
+    if (headerData) {
+      setCompanyName(headerData.companyName || '')
+    }
+  }, [headerData])
+
+  const handlePasswordChange = (e: React.FormEvent) => {
+    e.preventDefault()
+    setIsLoading(true)
+
+    if (!adminUser) {
+      toast.error('Kein Admin-Benutzer gefunden')
       setIsLoading(false)
+      return
     }
-    i
-      setIsLoading
+
+    if (!email || !email.includes('@')) {
+      toast.error('Bitte geben Sie eine gültige E-Mail-Adresse ein')
+      setIsLoading(false)
+      return
+    }
+
+    if (currentPassword !== adminUser.password) {
+      toast.error('Aktuelles Passwort ist falsch')
+      setIsLoading(false)
+      return
+    }
+
+    if (newPassword.length < 6) {
+      toast.error('Neues Passwort muss mindestens 6 Zeichen lang sein')
+      setIsLoading(false)
+      return
+    }
 
     if (newPassword !== confirmPassword) {
-      setIsLoading(fal
+      toast.error('Passwörter stimmen nicht überein')
+      setIsLoading(false)
+      return
     }
 
     setAdminUser(() => ({ email, password: newPassword }))
     
-    setCurrentPassword(''
-    setConfi
+    setCurrentPassword('')
+    setNewPassword('')
+    setConfirmPassword('')
+    setIsLoading(false)
+    
+    toast.success('Passwort erfolgreich geändert')
   }
 
-      return
+  const handleCancelPasswordChange = () => {
+    setEmail(adminUser?.email || '')
+    setCurrentPassword('')
+    setNewPassword('')
+    setConfirmPassword('')
+  }
 
-    toast.success('Passwo
-    setCurre
-    s
-
+  const handleCompanySettingsSubmit = (e: React.FormEvent) => {
     e.preventDefault()
+    
     if (!companyName.trim()) {
+      toast.error('Bitte geben Sie einen Firmennamen ein')
       return
+    }
 
-     
-
+    setHeaderData((current) => ({
+      companyName: companyName.trim(),
+      slides: current?.slides || []
     }))
-    toast.success('Firmeneinstellungen erfolgreich gespei
+    
+    toast.success('Firmeneinstellungen erfolgreich gespeichert')
+  }
 
-    setLogoU
-     
-
-    }))
+  const handleLogoRemove = () => {
+    setLogoUrl('')
+    toast.success('Logo entfernt')
+  }
 
   return (
-      <div className="bg-primary text-primary-foreground p
-    
-            <p c
-          <Button variant=
+    <div className="min-h-screen bg-background">
+      <div className="bg-primary text-primary-foreground p-4 sticky top-0 z-10">
+        <div className="max-w-4xl mx-auto flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <Key className="w-6 h-6" />
+            <h1 className="text-2xl font-bold">Einstellungen</h1>
+          </div>
+          <Button variant="secondary" onClick={onBack}>
+            <ArrowLeft className="mr-2" />
             Zurück
+          </Button>
         </div>
+      </div>
 
-   
-
+      <div className="max-w-4xl mx-auto p-6 space-y-6">
+        <Card>
+          <CardHeader>
+            <div className="flex items-center gap-3">
+              <Buildings className="w-6 h-6" />
+              <CardTitle>Firmeneinstellungen</CardTitle>
             </div>
             <CardDescription className="text-base">
-            
-     
-
+              Verwalten Sie die allgemeinen Informationen Ihres Unternehmens
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <form onSubmit={handleCompanySettingsSubmit} className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="company-name">Firmenname</Label>
                 <Input
                   type="text"
-                
+                  id="company-name"
+                  value={companyName}
+                  onChange={(e) => setCompanyName(e.target.value)}
+                  placeholder="z.B. Zimmerei Mustermann"
                   required
-                <p cla
+                />
+                <p className="text-sm text-muted-foreground">
+                  Dieser Name wird im Header der Website angezeigt
                 </p>
+              </div>
 
-
+              <div className="space-y-2">
+                <Label htmlFor="logo-url">Logo URL (optional)</Label>
+                <Input
+                  type="url"
                   id="logo-url"
-                  valu
-    
-                <p className="
+                  value={logoUrl}
+                  onChange={(e) => setLogoUrl(e.target.value)}
+                  placeholder="https://beispiel.de/logo.png"
+                />
+                <p className="text-sm text-muted-foreground">
+                  URL zu Ihrem Firmenlogo (wird zukünftig unterstützt)
                 </p>
+              </div>
 
-     
+              {logoUrl && (
+                <div className="flex items-center gap-3 p-3 bg-muted rounded-lg">
+                  <img
+                    src={logoUrl}
+                    alt="Logo Vorschau"
+                    className="w-16 h-16 object-contain"
+                    onError={(e) => {
+                      e.currentTarget.src = ''
+                      toast.error('Logo konnte nicht geladen werden')
+                    }}
+                  />
+                  <Button
+                    type="button"
+                    variant="destructive"
+                    size="sm"
+                    onClick={handleLogoRemove}
+                  >
+                    <Trash className="mr-2" />
+                    Logo entfernen
+                  </Button>
+                </div>
+              )}
 
-                      src={logoUr
-                 
-                        e.currentTarge
-                    />
-                      type="button"
-       
-
-                      Logo entfernen
-   
-
-              <Button type="submit
-                Fi
+              <Button type="submit" className="w-full">
+                <Check className="mr-2" />
+                Firmeneinstellungen speichern
+              </Button>
             </form>
+          </CardContent>
         </Card>
-        <Card>
-            <div class
-            </div>
-       
-                ? 'Ändern Sie Ihre
-   
 
-          
+        <Card>
+          <CardHeader>
+            <div className="flex items-center gap-3">
+              <Key className="w-6 h-6" />
+              <CardTitle>Admin-Anmeldedaten</CardTitle>
+            </div>
+            <CardDescription className="text-base">
+              {adminUser 
+                ? 'Ändern Sie Ihre E-Mail-Adresse und Ihr Passwort'
+                : 'Legen Sie ein Admin-Konto an'}
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <form onSubmit={handlePasswordChange} className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="email">E-Mail-Adresse</Label>
                 <Input
                   type="email"
+                  id="email"
+                  value={email}
                   onChange={(e) => setEmail(e.target.value)}
-               
+                  required
+                />
                 {adminUser?.email && (
+                  <p className="text-sm text-muted-foreground">
                     Aktuelle E-Mail: {adminUser.email}
-                
+                  </p>
+                )}
+              </div>
 
-                <div className="space-y-2"
-                  
-                   
-              
-            
-
-                    <button
-              
-                    >
-                        <EyeSlash className="w-5 h-5" />
-                        <Eye className="w-5 h-5" />
-                  
-                </div>
-
-                <Label htmlFor="new-password">Neues Passwort</Label>
+              <div className="space-y-2">
+                <Label htmlFor="current-password">Aktuelles Passwort</Label>
+                <div className="relative">
                   <Input
-                    typ
-                    onC
+                    type={showCurrent ? 'text' : 'password'}
+                    id="current-password"
+                    value={currentPassword}
+                    onChange={(e) => setCurrentPassword(e.target.value)}
                     required
                     className="pr-10"
+                  />
                   <button
-                    on
+                    type="button"
+                    onClick={() => setShowCurrent(!showCurrent)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
                   >
-                      <EyeSla
-                      <Eye className=
+                    {showCurrent ? (
+                      <EyeSlash className="w-5 h-5" />
+                    ) : (
+                      <Eye className="w-5 h-5" />
+                    )}
                   </button>
+                </div>
               </div>
-              <div classNa
-                <d
+
+              <div className="space-y-2">
+                <Label htmlFor="new-password">Neues Passwort</Label>
+                <div className="relative">
+                  <Input
+                    type={showNew ? 'text' : 'password'}
+                    id="new-password"
+                    value={newPassword}
+                    onChange={(e) => setNewPassword(e.target.value)}
+                    required
+                    className="pr-10"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowNew(!showNew)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                  >
+                    {showNew ? (
+                      <EyeSlash className="w-5 h-5" />
+                    ) : (
+                      <Eye className="w-5 h-5" />
+                    )}
+                  </button>
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="confirm-password">Passwort bestätigen</Label>
+                <div className="relative">
+                  <Input
+                    type={showConfirm ? 'text' : 'password'}
                     id="confirm-password"
                     value={confirmPassword}
-                    
-                    
-
-                    onClick={() => setSho
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    required
+                    className="pr-10"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowConfirm(!showConfirm)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
                   >
-                      
-                      <Eye clas
+                    {showConfirm ? (
+                      <EyeSlash className="w-5 h-5" />
+                    ) : (
+                      <Eye className="w-5 h-5" />
+                    )}
                   </button>
+                </div>
               </div>
+
               <div className="flex gap-3">
+                <Button type="submit" disabled={isLoading} className="flex-1">
                   <Check className="mr-2" />
-                </
-                  <Button 
-                    variant="destructive" 
-                  >
-                  </
-
-
-              <div className="mt-6 p-4 bg-m
-                  <strong>Hinweis:</strong> We
+                  Passwort ändern
+                </Button>
+                <Button 
+                  type="button"
+                  variant="destructive" 
+                  onClick={handleCancelPasswordChange}
+                >
+                  Abbrechen
+                </Button>
               </div>
+
+              <div className="mt-6 p-4 bg-muted rounded-lg text-sm">
+                <strong>Hinweis:</strong> Wenn Sie Ihr Passwort vergessen, können nur App-Besitzer sich anmelden.
+              </div>
+            </form>
           </CardContent>
+        </Card>
       </div>
+    </div>
   )
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+}
