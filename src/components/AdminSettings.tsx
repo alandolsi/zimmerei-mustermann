@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react'
-import { Button } from '@/components/ui/but
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-
-  onBack: () => void
-
-  companyName: string
+import { Label } from '@/components/ui/label'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { ArrowLeft, Building, Key, Eye, EyeSlash, Check, Trash } from '@phosphor-icons/react'
+import { toast } from 'sonner'
+import { useKV } from '@github/spark/hooks'
 
 interface AdminSettingsProps {
   onBack: () => void
@@ -35,117 +35,104 @@ export function AdminSettings({ onBack }: AdminSettingsProps) {
   const [companyName, setCompanyName] = useState('')
   const [logoUrl, setLogoUrl] = useState('')
 
-      return
-
-      toast.error('Passwörter s
-     
-
-
-    setNewPassword(
-    setIsLoading(fals
-    toast.success('Passwort erfolgreich geändert')
-
-    setEmail(admin
-
-  }
-  const handleCompanyS
-    
-
+  useEffect(() => {
+    if (adminUser) {
+      setEmail(adminUser.email)
     }
-    setHeaderData((current) => ({
-      slides: current?.sl
-    
+    if (headerData) {
+      setCompanyName(headerData.companyName || 'Zimmerei Mustermann')
+    }
+  }, [adminUser, headerData])
+
+  const handlePasswordChange = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setIsLoading(true)
+
+    if (!adminUser) {
+      setAdminUser({ email, password: newPassword })
+      toast.success('Admin-Konto erfolgreich erstellt')
+      setCurrentPassword('')
+      setNewPassword('')
+      setConfirmPassword('')
+      setIsLoading(false)
+      return
+    }
+
+    if (currentPassword !== adminUser.password) {
+      toast.error('Aktuelles Passwort ist falsch')
+      setIsLoading(false)
+      return
+    }
+
+    if (newPassword !== confirmPassword) {
+      toast.error('Passwörter stimmen nicht überein')
+      setIsLoading(false)
+      return
+    }
+
+    if (newPassword.length < 6) {
+      toast.error('Passwort muss mindestens 6 Zeichen lang sein')
+      setIsLoading(false)
+      return
+    }
+
+    setAdminUser({ email, password: newPassword })
+    setCurrentPassword('')
+    setNewPassword('')
+    setConfirmPassword('')
+    setIsLoading(false)
+    toast.success('Passwort erfolgreich geändert')
   }
 
+  const handleCancelPasswordChange = () => {
+    setCurrentPassword('')
+    setNewPassword('')
+    setConfirmPassword('')
+    if (adminUser) {
+      setEmail(adminUser.email)
+    }
+  }
+
+  const handleCompanySettingsSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    setHeaderData((current) => ({
+      ...current,
+      companyName,
+      slides: current?.slides || []
+    }))
+    toast.success('Firmeneinstellungen gespeichert')
+  }
+
+  const handleLogoRemove = () => {
+    setLogoUrl('')
     toast.success('Logo entfernt')
+  }
 
-    <div className="min-h
-        <div
-     
-
+  return (
+    <div className="min-h-screen bg-background">
+      <div className="bg-primary text-primary-foreground py-6 px-4 shadow-md">
+        <div className="max-w-3xl mx-auto">
+          <Button variant="secondary" onClick={onBack} className="mb-4">
             <ArrowLeft className="mr-2" />
+            Zurück zum Dashboard
           </Button>
+          <h1 className="text-3xl font-bold">Allgemeine Einstellungen</h1>
+          <p className="text-primary-foreground/90 mt-1">Verwalten Sie die allgemeinen Informationen Ihres Unternehmens</p>
+        </div>
       </div>
-      <div c
-     
 
+      <div className="max-w-3xl mx-auto px-4 py-12 space-y-6">
+        <Card>
+          <CardHeader>
+            <div className="flex items-center gap-3">
+              <Building className="w-6 h-6" />
+              <CardTitle>Firmeneinstellungen</CardTitle>
             </div>
-              Verwalten Sie die allgemeinen Informationen Ihres Unterne
+            <CardDescription className="text-base">
+              Verwalten Sie die allgemeinen Informationen Ihres Unternehmens
+            </CardDescription>
           </CardHeader>
-            
-     
-
-                  value={companyName}
-                  placeholder="z.B. Zimmerei Musterma
-                />
-            
-     
-
-                <Input
-    
-                  onChange
-                />
-                  URL zu I
-              </div>
-    
-                  <img
-   
-
-                      toast.error('Logo konn
-                  />
-                    type="
-                    si
-                  >
-   
-
-
-                <Check
-    
-          </CardContent>
-
-          <C
-     
-
-              {adminUser 
-                :
-          </CardHeader>
-       
-    
-                  type="email"
-   
-
-                {adminUser?.email 
-                  
-                )}
-
-
-          
-                    id="current-password"
-                    onChange={(e) => setCurrentPassword(e.target.value)}
-                    className="pr-10"
-                  <button
-                    onClick={() => setS
-                  >
-                
-                      <Eye className="w-5 h-5" />
-                  </button>
-              </di
-              <div 
-              
-            
-
-                    required
-              
-                    ty
-                    className="absolute right-3 top-1
-                    {showNew ? (
-                    ) : (
-                  
-                </div>
-
-                <Label htmlFor
-                  <Inpu
-                    id=
+          <CardContent>
             <form onSubmit={handleCompanySettingsSubmit} className="space-y-4">
               <div className="space-y-2">
                 <Label htmlFor="company-name">Firmenname</Label>
@@ -294,37 +281,37 @@ export function AdminSettings({ onBack }: AdminSettingsProps) {
                     type={showConfirm ? 'text' : 'password'}
                     id="confirm-password"
                     value={confirmPassword}
-
+                    onChange={(e) => setConfirmPassword(e.target.value)}
                     required
-
+                    className="pr-10"
                   />
-
+                  <button
                     type="button"
                     onClick={() => setShowConfirm(!showConfirm)}
                     className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
-
+                  >
                     {showConfirm ? (
                       <EyeSlash className="w-5 h-5" />
                     ) : (
                       <Eye className="w-5 h-5" />
                     )}
-
+                  </button>
                 </div>
-
+              </div>
 
               <div className="flex gap-3">
                 <Button type="submit" disabled={isLoading} className="flex-1">
                   <Check className="mr-2" />
                   Passwort ändern
-
+                </Button>
                 <Button 
-
+                  type="button"
                   variant="destructive" 
                   onClick={handleCancelPasswordChange}
                 >
                   Abbrechen
                 </Button>
-
+              </div>
 
               <div className="mt-6 p-4 bg-muted rounded-lg text-sm">
                 <strong>Hinweis:</strong> Wenn Sie Ihr Passwort vergessen, können nur App-Besitzer sich anmelden.
@@ -332,7 +319,7 @@ export function AdminSettings({ onBack }: AdminSettingsProps) {
             </form>
           </CardContent>
         </Card>
-
+      </div>
     </div>
-
+  )
 }
