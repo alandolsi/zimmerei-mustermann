@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { useKV } from '@github/spark/hooks'
 import { Button } from '@/components/ui/button'
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
 import { List, CaretLeft, CaretRight } from '@phosphor-icons/react'
@@ -13,29 +14,53 @@ const navItems = [
   { name: 'Kontakt', href: '#contact' },
 ]
 
-const carouselSlides = [
+interface Slide {
+  id: string
+  image: string
+  title: string
+  subtitle: string
+}
+
+interface HeaderData {
+  companyName: string
+  slides: Slide[]
+}
+
+const defaultCarouselSlides: Slide[] = [
   {
+    id: '1',
     image: 'https://images.unsplash.com/photo-1513467535987-fd81bc7d62f8?q=80&w=2000',
     title: 'Traditionelle Holzbaukunst',
     subtitle: 'Handwerksqualität für nachhaltige Bauwerke',
   },
   {
+    id: '2',
     image: 'https://images.unsplash.com/photo-1503387762-592deb58ef4e?q=80&w=2000',
     title: 'Moderne Dachkonstruktionen',
     subtitle: 'Innovation trifft auf bewährte Technik',
   },
   {
+    id: '3',
     image: 'https://images.unsplash.com/photo-1541888946425-d81bb19240f5?q=80&w=2000',
     title: 'Fachgerechte Sanierungen',
     subtitle: 'Erhaltung und Modernisierung Ihres Gebäudes',
   },
 ]
 
+const defaultHeaderData: HeaderData = {
+  companyName: 'Zimmerei Mustermann',
+  slides: defaultCarouselSlides,
+}
+
 export function Header() {
+  const [headerData] = useKV<HeaderData>('header-data', defaultHeaderData)
   const [scrolled, setScrolled] = useState(false)
   const [activeSection, setActiveSection] = useState('home')
   const [mobileOpen, setMobileOpen] = useState(false)
   const [currentSlide, setCurrentSlide] = useState(0)
+
+  const companyName = headerData?.companyName || defaultHeaderData.companyName
+  const carouselSlides = headerData?.slides || defaultHeaderData.slides
 
   useEffect(() => {
     const handleScroll = () => {
@@ -97,7 +122,7 @@ export function Header() {
           <div className="flex justify-between items-center h-20">
             <div className="flex-shrink-0">
               <h1 className={`text-2xl font-bold transition-colors ${scrolled ? 'text-primary' : 'text-white'}`}>
-                Zimmerei Mustermann
+                {companyName}
               </h1>
             </div>
 

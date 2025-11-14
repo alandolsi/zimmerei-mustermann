@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Wrench, Envelope, ArrowLeft, FolderOpen, Images, Info, Gear, SignOut } from '@phosphor-icons/react'
+import { Wrench, Envelope, ArrowLeft, FolderOpen, Images, Info, Gear, SignOut, Aperture } from '@phosphor-icons/react'
 
 interface AdminDashboardProps {
   onBack: () => void
@@ -10,10 +10,11 @@ interface AdminDashboardProps {
   onNavigateToReferences: () => void
   onNavigateToAbout: () => void
   onNavigateToSettings: () => void
+  onNavigateToHeader: () => void
   onLogout: () => void
 }
 
-export function AdminDashboard({ onBack, onNavigateToServices, onNavigateToContacts, onNavigateToProjects, onNavigateToReferences, onNavigateToAbout, onNavigateToSettings, onLogout }: AdminDashboardProps) {
+export function AdminDashboard({ onBack, onNavigateToServices, onNavigateToContacts, onNavigateToProjects, onNavigateToReferences, onNavigateToAbout, onNavigateToSettings, onNavigateToHeader, onLogout }: AdminDashboardProps) {
   return (
     <div className="min-h-screen bg-background">
       <div className="bg-primary text-primary-foreground py-6 px-4 shadow-md">
@@ -37,6 +38,23 @@ export function AdminDashboard({ onBack, onNavigateToServices, onNavigateToConta
 
       <div className="max-w-7xl mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <Card className="hover:shadow-lg transition-shadow cursor-pointer" onClick={onNavigateToHeader}>
+            <CardHeader>
+              <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
+                <Aperture className="w-6 h-6 text-primary" weight="duotone" />
+              </div>
+              <CardTitle className="text-2xl">Header & Hero Slider</CardTitle>
+              <CardDescription className="text-base">
+                Bearbeiten Sie den Firmennamen und die Hero-Slider-Inhalte
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Button className="w-full">
+                Zur Header-Verwaltung
+              </Button>
+            </CardContent>
+          </Card>
+
           <Card className="hover:shadow-lg transition-shadow cursor-pointer" onClick={onNavigateToServices}>
             <CardHeader>
               <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">

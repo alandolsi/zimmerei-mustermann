@@ -20,8 +20,9 @@ import { ContactAdmin } from '@/components/ContactAdmin'
 import { ProjectsAdmin } from '@/components/ProjectsAdmin'
 import { ReferencesAdmin } from '@/components/ReferencesAdmin'
 import { AboutAdmin } from '@/components/AboutAdmin'
+import { HeaderAdmin } from '@/components/HeaderAdmin'
 
-type Page = 'home' | 'impressum' | 'datenschutz' | 'agb' | 'admin-login' | 'admin' | 'admin-settings' | 'admin-services' | 'admin-contacts' | 'admin-projects' | 'admin-references' | 'admin-about'
+type Page = 'home' | 'impressum' | 'datenschutz' | 'agb' | 'admin-login' | 'admin' | 'admin-settings' | 'admin-services' | 'admin-contacts' | 'admin-projects' | 'admin-references' | 'admin-about' | 'admin-header'
 
 function App() {
   const [currentPage, setCurrentPage] = useState<Page>('home')
@@ -105,6 +106,7 @@ function App() {
           onNavigateToReferences={() => navigateToPage('admin-references')}
           onNavigateToAbout={() => navigateToPage('admin-about')}
           onNavigateToSettings={() => navigateToPage('admin-settings')}
+          onNavigateToHeader={() => navigateToPage('admin-header')}
         />
         <ScrollToTop />
         <Toaster position="top-right" />
@@ -166,6 +168,16 @@ function App() {
     return (
       <>
         <AboutAdmin onBack={() => navigateToPage('admin')} />
+        <ScrollToTop />
+        <Toaster position="top-right" />
+      </>
+    )
+  }
+
+  if (currentPage === 'admin-header' && isAdminAuthenticated) {
+    return (
+      <>
+        <HeaderAdmin onBack={() => navigateToPage('admin')} />
         <ScrollToTop />
         <Toaster position="top-right" />
       </>
