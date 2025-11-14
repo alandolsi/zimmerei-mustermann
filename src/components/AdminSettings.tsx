@@ -12,8 +12,7 @@ interface AdminSettingsProps {
 }
 
 export function AdminSettings({ onBack }: AdminSettingsProps) {
-  const [adminEmail, setAdminEmail] = useKV<string>('admin-email', '')
-  const [adminPassword, setAdminPassword] = useKV<string>('admin-password', '')
+  const [adminUser, setAdminUser] = useKV<{ email: string; password: string } | null>('user', null)
   const [email, setEmail] = useState('')
   const [currentPassword, setCurrentPassword] = useState('')
   const [newPassword, setNewPassword] = useState('')
@@ -27,7 +26,7 @@ export function AdminSettings({ onBack }: AdminSettingsProps) {
     e.preventDefault()
     setIsLoading(true)
 
-    if (adminPassword && currentPassword !== adminPassword) {
+    if (adminUser?.password && currentPassword !== adminUser.password) {
       toast.error('Aktuelles Passwort ist falsch')
       setIsLoading(false)
       return
@@ -53,8 +52,7 @@ export function AdminSettings({ onBack }: AdminSettingsProps) {
 
     await new Promise(resolve => setTimeout(resolve, 500))
 
-    setAdminEmail(() => email)
-    setAdminPassword(() => newPassword)
+    setAdminUser(() => ({ email, password: newPassword }))
     toast.success('Anmeldedaten erfolgreich gespeichert!')
     
     setEmail('')
@@ -69,8 +67,7 @@ export function AdminSettings({ onBack }: AdminSettingsProps) {
       return
     }
 
-    setAdminEmail(() => '')
-    setAdminPassword(() => '')
+    setAdminUser(() => null)
     toast.success('Passwortschutz entfernt')
     setEmail('')
     setCurrentPassword('')
@@ -101,7 +98,7 @@ export function AdminSettings({ onBack }: AdminSettingsProps) {
             </div>
             <CardTitle className="text-2xl">Anmeldedaten verwalten</CardTitle>
             <CardDescription className="text-base">
-              {adminPassword 
+              {adminUser?.password 
                 ? 'Ändern Sie Ihre Admin-Anmeldedaten oder entfernen Sie den Passwortschutz'
                 : 'Richten Sie E-Mail und Passwort für den Admin-Bereich ein'}
             </CardDescription>
@@ -115,17 +112,17 @@ export function AdminSettings({ onBack }: AdminSettingsProps) {
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder={adminEmail || "admin@beispiel.de"}
+                  placeholder={adminUser?.email || "admin@beispiel.de"}
                   required
                 />
-                {adminEmail && (
+                {adminUser?.email && (
                   <p className="text-sm text-muted-foreground">
-                    Aktuelle E-Mail: {adminEmail}
+                    Aktuelle E-Mail: {adminUser.email}
                   </p>
                 )}
               </div>
 
-              {adminPassword && (
+              {adminUser?.password && (
                 <div className="space-y-2">
                   <Label htmlFor="current-password">Aktuelles Passwort</Label>
                   <div className="relative">
@@ -211,7 +208,7 @@ export function AdminSettings({ onBack }: AdminSettingsProps) {
                   <Check className="mr-2" />
                   {isLoading ? 'Wird gespeichert...' : 'Anmeldedaten speichern'}
                 </Button>
-                {adminPassword && (
+                {adminUser?.password && (
                   <Button 
                     type="button" 
                     variant="destructive" 
@@ -223,7 +220,7 @@ export function AdminSettings({ onBack }: AdminSettingsProps) {
               </div>
             </form>
 
-            {!adminPassword && (
+            {!adminUser?.password && (
               <div className="mt-6 p-4 bg-muted rounded-lg">
                 <p className="text-sm text-muted-foreground">
                   <strong>Hinweis:</strong> Wenn keine Anmeldedaten gesetzt sind, können nur Sie als Besitzer auf den Admin-Bereich zugreifen.

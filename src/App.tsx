@@ -42,6 +42,29 @@ function App() {
     checkOwner()
   }, [])
 
+  useEffect(() => {
+    const migrateOldData = async () => {
+      try {
+        const oldEmail = await window.spark.kv.get<string>('admin-email')
+        const oldPassword = await window.spark.kv.get<string>('admin-password')
+        
+        if (oldEmail || oldPassword) {
+          const existingUser = await window.spark.kv.get<{ email: string; password: string }>('user')
+          
+          if (!existingUser && oldEmail && oldPassword) {
+            await window.spark.kv.set('user', { email: oldEmail, password: oldPassword })
+          }
+          
+          await window.spark.kv.delete('admin-email')
+          await window.spark.kv.delete('admin-password')
+        }
+      } catch (error) {
+        console.error('Migration error:', error)
+      }
+    }
+    migrateOldData()
+  }, [])
+
   const navigateToPage = (page: Page) => {
     setCurrentPage(page)
     window.scrollTo({ top: 0, behavior: 'smooth' })

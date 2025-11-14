@@ -15,15 +15,12 @@ export function AdminLogin({ onLoginSuccess, onBack }: AdminLoginProps) {
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
-  const [adminEmail, setAdminEmail] = useState<string>('')
-  const [adminPassword, setAdminPassword] = useState<string>('')
+  const [adminUser, setAdminUser] = useState<{ email: string; password: string } | null>(null)
 
   useEffect(() => {
     const loadCredentials = async () => {
-      const savedEmail = await window.spark.kv.get<string>('admin-email')
-      const savedPassword = await window.spark.kv.get<string>('admin-password')
-      setAdminEmail(savedEmail || '')
-      setAdminPassword(savedPassword || '')
+      const savedUser = await window.spark.kv.get<{ email: string; password: string }>('user')
+      setAdminUser(savedUser || null)
     }
     loadCredentials()
   }, [])
@@ -38,7 +35,7 @@ export function AdminLogin({ onLoginSuccess, onBack }: AdminLoginProps) {
       const user = await window.spark.user()
       const isOwner = user && user.isOwner
 
-      if (!adminEmail && !adminPassword) {
+      if (!adminUser) {
         if (isOwner) {
           onLoginSuccess()
           toast.success('Erfolgreich angemeldet!')
@@ -46,7 +43,7 @@ export function AdminLogin({ onLoginSuccess, onBack }: AdminLoginProps) {
           toast.error('Zugriff verweigert')
         }
       } else {
-        if ((email === adminEmail && password === adminPassword) || isOwner) {
+        if ((email === adminUser.email && password === adminUser.password) || isOwner) {
           onLoginSuccess()
           toast.success('Erfolgreich angemeldet!')
         } else {
