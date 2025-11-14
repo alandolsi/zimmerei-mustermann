@@ -51,25 +51,21 @@ const defaultHeaderData: HeaderData = {
 
 export function HeaderAdmin({ onBack }: HeaderAdminProps) {
   const [headerData, setHeaderData] = useKV<HeaderData>('header-data', defaultHeaderData)
-  const [companyName, setCompanyName] = useState('')
-  const [logo, setLogo] = useState('')
   const [slides, setSlides] = useState<Slide[]>([])
 
   useEffect(() => {
     if (headerData) {
-      setCompanyName(headerData.companyName)
-      setLogo(headerData.logo || '')
       setSlides(headerData.slides)
     }
   }, [headerData])
 
   const handleSave = () => {
-    setHeaderData(() => ({
-      companyName,
-      logo: logo || undefined,
+    setHeaderData((current) => ({
+      companyName: current?.companyName || defaultHeaderData.companyName,
+      logo: current?.logo,
       slides,
     }))
-    toast.success('Header-Daten erfolgreich gespeichert')
+    toast.success('Hero-Slides erfolgreich gespeichert')
   }
 
   const handleAddSlide = () => {
@@ -104,9 +100,9 @@ export function HeaderAdmin({ onBack }: HeaderAdminProps) {
       <div className="bg-primary text-primary-foreground py-6 px-4 shadow-md">
         <div className="max-w-6xl mx-auto flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold">Header bearbeiten</h1>
+            <h1 className="text-2xl font-bold">Hero-Slider bearbeiten</h1>
             <p className="text-primary-foreground/90 mt-1">
-              Verwalten Sie den Firmennamen und die Slides im Hero-Bereich
+              Verwalten Sie die Slides im Hero-Bereich
             </p>
           </div>
           <Button variant="secondary" onClick={onBack}>
@@ -117,26 +113,6 @@ export function HeaderAdmin({ onBack }: HeaderAdminProps) {
       </div>
 
       <div className="max-w-6xl mx-auto p-6 space-y-6">
-        <Card>
-          <CardHeader>
-            <CardTitle>Firmenname</CardTitle>
-            <CardDescription>
-              Dieser Name wird im Header der Website angezeigt
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-2">
-              <Label htmlFor="company-name">Firmenname</Label>
-              <Input
-                id="company-name"
-                value={companyName}
-                onChange={(e) => setCompanyName(e.target.value)}
-                placeholder="z.B. Zimmerei Mustermann"
-              />
-            </div>
-          </CardContent>
-        </Card>
-
         <Card>
           <CardHeader>
             <div className="flex items-center justify-between">

@@ -43,9 +43,9 @@ export function AdminDashboard({ onBack, onNavigateToServices, onNavigateToConta
               <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
                 <Aperture className="w-6 h-6 text-primary" weight="duotone" />
               </div>
-              <CardTitle className="text-2xl">Header & Hero Slider</CardTitle>
+              <CardTitle className="text-2xl">Hero Slider</CardTitle>
               <CardDescription className="text-base">
-                Bearbeiten Sie den Firmennamen und die Hero-Slider-Inhalte
+                Bearbeiten Sie die Hero-Slider-Inhalte
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -147,7 +147,7 @@ export function AdminDashboard({ onBack, onNavigateToServices, onNavigateToConta
               </div>
               <CardTitle className="text-2xl">Einstellungen</CardTitle>
               <CardDescription className="text-base">
-                Verwalten Sie Ihr Admin-Passwort und weitere Einstellungen
+                Verwalten Sie Firmenname, Logo, Admin-Passwort und weitere Einstellungen
               </CardDescription>
             </CardHeader>
             <CardContent>
