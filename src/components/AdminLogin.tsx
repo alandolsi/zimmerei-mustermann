@@ -14,28 +14,30 @@ export function AdminLogin({ onLoginSuccess, onBack }: AdminLoginProps) {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
-  const [adminUser, setAdminUser] = useState<{ emai
+  const [isLoading, setIsLoading] = useState(false)
+  const [adminUser, setAdminUser] = useState<{ email: string; password: string } | null>(null)
+
   useEffect(() => {
-
+    const loadAdminUser = async () => {
+      try {
+        const user = await window.spark.kv.get<{ email: string; password: string }>('user')
+        setAdminUser(user || null)
+      } catch (error) {
+        console.error('Failed to load admin user:', error)
+      }
     }
+    loadAdminUser()
   }, [])
+
   const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
     setIsLoading(true)
-    a
-    try {
-      co
-
-          onLoginSuccess()
-        } else {
-        }
-
-          toast.success('Erfolgreich angemeldet!')
 
     try {
       const user = await window.spark.user()
       const isOwner = user && user.isOwner
 
-      if (!adminEmail && !adminPassword) {
+      if (!adminUser) {
         if (isOwner) {
           onLoginSuccess()
           toast.success('Erfolgreich angemeldet!')
@@ -43,7 +45,7 @@ export function AdminLogin({ onLoginSuccess, onBack }: AdminLoginProps) {
           toast.error('Zugriff verweigert')
         }
       } else {
-        if ((email === adminEmail && password === adminPassword) || isOwner) {
+        if ((email === adminUser.email && password === adminUser.password) || isOwner) {
           onLoginSuccess()
           toast.success('Erfolgreich angemeldet!')
         } else {
@@ -127,14 +129,14 @@ export function AdminLogin({ onLoginSuccess, onBack }: AdminLoginProps) {
             <div className="space-y-3 pt-2">
               <Button type="submit" className="w-full" disabled={isLoading}>
                 {isLoading ? 'Anmeldung läuft...' : 'Anmelden'}
-
+              </Button>
               <Button type="button" variant="outline" className="w-full" onClick={onBack}>
                 Zurück zur Hauptseite
               </Button>
-
-
-
-
-
-
-
+            </div>
+          </form>
+        </CardContent>
+      </Card>
+    </div>
+  )
+}
