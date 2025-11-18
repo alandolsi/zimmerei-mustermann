@@ -1,122 +1,107 @@
 const APPWRITE_ENDPOINT = 'https://api.rosenheim-dev.de'
+const APPWRITE_API_KEY = ''
 
-
-    users: string
-    services: string
-    references: 
-    aboutFeatures
-  }
-
-  databaseId: string
-  data: any,
-) {
-  
-    ? { documentId, data
-
- 
-
-      'X-Appwrite-Key': APPWRITE_API_
-    body: JSON.string
-
-    const er
-  }
-  r
-
-  
-) {
-
-    method: 'GET',
-
-      'X-Appwrite-Key': APPWRITE_API_
-  })
-  if (!respons
-    throw new Error(`Failed to list docum
-
-}
-export
+export async function createDocument(
+  databaseId: string,
   collectionId: string,
+  data: any,
+  documentId?: string
 ) {
+  const url = `${APPWRITE_ENDPOINT}/v1/databases/${databaseId}/collections/${collectionId}/documents`
+  
+  const body = documentId 
+    ? { documentId, data }
+    : { data }
 
-    method: 'GET',
-      'Content-Type': 'application/json
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Appwrite-Project': databaseId,
       'X-Appwrite-Key': APPWRITE_API_KEY,
+    },
+    body: JSON.stringify(body),
+  })
+
+  if (!response.ok) {
+    const error = await response.text()
+    throw new Error(`Failed to create document: ${error}`)
   }
 
-    throw new Error(`Fai
+  return response.json()
+}
 
+export async function listDocuments(
+  databaseId: string,
+  collectionId: string
+) {
+  const url = `${APPWRITE_ENDPOINT}/v1/databases/${databaseId}/collections/${collectionId}/documents`
 
-export async function updateDocument
-  collectionId: strin
-  data: any
-  c
   const response = await fetch(url, {
-
-      'X-Appwrite-Project': databaseI
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Appwrite-Project': databaseId,
+      'X-Appwrite-Key': APPWRITE_API_KEY,
     },
   })
+
   if (!response.ok) {
-    throw new Error(`Failed to update d
+    const error = await response.text()
+    throw new Error(`Failed to list documents: ${error}`)
+  }
 
+  return response.json()
 }
-expo
 
+export async function getDocument(
+  databaseId: string,
+  collectionId: string,
+  documentId: string
 ) {
+  const url = `${APPWRITE_ENDPOINT}/v1/databases/${databaseId}/collections/${collectionId}/documents/${documentId}`
 
-    method: 'DELETE',
-   
-
+  const response = await fetch(url, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Appwrite-Key': APPWRITE_API_KEY,
+    },
   })
- 
 
+  if (!response.ok) {
+    const error = await response.text()
+    throw new Error(`Failed to get document: ${error}`)
+  }
 
+  return response.json()
 }
 
+export async function updateDocument(
+  databaseId: string,
+  collectionId: string,
+  documentId: string,
+  data: any
+) {
+  const url = `${APPWRITE_ENDPOINT}/v1/databases/${databaseId}/collections/${collectionId}/documents/${documentId}`
 
+  const response = await fetch(url, {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Appwrite-Project': databaseId,
+      'X-Appwrite-Key': APPWRITE_API_KEY,
+    },
+    body: JSON.stringify({ data }),
+  })
 
+  if (!response.ok) {
+    const error = await response.text()
+    throw new Error(`Failed to update document: ${error}`)
+  }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  return response.json()
+}
 
 export async function deleteDocument(
   databaseId: string,
