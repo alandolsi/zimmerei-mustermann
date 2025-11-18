@@ -21,8 +21,9 @@ import { ProjectsAdmin } from '@/components/ProjectsAdmin'
 import { ReferencesAdmin } from '@/components/ReferencesAdmin'
 import { AboutAdmin } from '@/components/AboutAdmin'
 import { HeaderAdmin } from '@/components/HeaderAdmin'
+import { MigrationTool } from '@/components/MigrationTool'
 
-type Page = 'home' | 'impressum' | 'datenschutz' | 'agb' | 'admin-login' | 'admin' | 'admin-settings' | 'admin-services' | 'admin-contacts' | 'admin-projects' | 'admin-references' | 'admin-about' | 'admin-header'
+type Page = 'home' | 'impressum' | 'datenschutz' | 'agb' | 'admin-login' | 'admin' | 'admin-settings' | 'admin-services' | 'admin-contacts' | 'admin-projects' | 'admin-references' | 'admin-about' | 'admin-header' | 'admin-migration'
 
 function App() {
   const [currentPage, setCurrentPage] = useState<Page>('home')
@@ -107,6 +108,7 @@ function App() {
           onNavigateToAbout={() => navigateToPage('admin-about')}
           onNavigateToSettings={() => navigateToPage('admin-settings')}
           onNavigateToHeader={() => navigateToPage('admin-header')}
+          onNavigateToMigration={() => navigateToPage('admin-migration')}
         />
         <ScrollToTop />
         <Toaster position="top-right" />
@@ -178,6 +180,16 @@ function App() {
     return (
       <>
         <HeaderAdmin onBack={() => navigateToPage('admin')} />
+        <ScrollToTop />
+        <Toaster position="top-right" />
+      </>
+    )
+  }
+
+  if (currentPage === 'admin-migration' && isAdminAuthenticated) {
+    return (
+      <>
+        <MigrationTool onBack={() => navigateToPage('admin')} />
         <ScrollToTop />
         <Toaster position="top-right" />
       </>
